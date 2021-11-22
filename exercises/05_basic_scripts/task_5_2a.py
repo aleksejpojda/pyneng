@@ -49,3 +49,39 @@ bin_ip = "00001010000000010000000111000011"
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+ipmask = input("Введите адрес сети и маску: ")
+ip = ipmask.split("/")[0].split(".")
+mask = ipmask.split("/")[1]
+mask_bin = "1" * int(mask) + "0" * (32-int(mask))
+
+ip_bin = format(int(bin(int(ip[0])).split("b")[1]), "08") \
+         + format(int(bin(int(ip[1])).split("b")[1]), "08") \
+         + format(int(bin(int(ip[2])).split("b")[1]), "08") \
+         + format(int(bin(int(ip[3])).split("b")[1]), "08")
+
+ip_net_bin = ip_bin[0:int(mask)] + (32 - int(mask)) * "0"
+
+ip_net = [int(ip_net_bin[0:8], 2), int(ip_net_bin[8:16], 2), \
+          int(ip_net_bin[16:24], 2), int(ip_net_bin[24:], 2)]
+
+ip_net_str = str(ip_net[0]) + "." +  str(ip_net[1]) + "." + \
+             str(ip_net[2]) + "." +  str(ip_net[3])
+
+print("Network:\n", \
+            format(ip_net_str.split(".")[0], "8"), "  ", \
+            format(ip_net_str.split(".")[1], "8"), "  ", \
+            format(ip_net_str.split(".")[2], "8"), "  ", \
+            format(ip_net_str.split(".")[3], "8"), "  ", "\n", \
+            format(int(bin(int(ip_net_str.split(".")[0])).split("b")[1]), "08"), "  ", \
+            format(int(bin(int(ip_net_str.split(".")[1])).split("b")[1]), "08"), "  ", \
+            format(int(bin(int(ip_net_str.split(".")[2])).split("b")[1]), "08"), "  ", \
+            format(int(bin(int(ip_net_str.split(".")[3])).split("b")[1]), "08"), "  ", "\n" )
+print("Mask:\n", "/"+mask, "\n", \
+            format(int(mask_bin[0:8], 2), "<8"), "  ", \
+            format(int(mask_bin[8:16], 2), "<8"), "  ", \
+            format(int(mask_bin[16:24], 2), "<8"), "  ", \
+            format(int(mask_bin[24:], 2), "<8"), "  ", "\n", \
+            mask_bin[0:8], "  ", mask_bin[8:16], "  ", \
+            mask_bin[16:24], "  ", mask_bin[24:], "  "
+           )
+
