@@ -73,11 +73,49 @@ trunk = {
     "0/5": ["add", "10", "21"],
     "0/7": ["only", "30"],
 }
+#access_templ = ""
+#for int_access,vlan in access.items():
+#    print(f"Interface FastEthernet{int_access}")
+#    for access_templ in access_template:
+#        if access_templ.endswith("vlan"):
+#           print(" ", access_templ, vlan)
+#        else:
+#            print(" ", access_templ)
 
-# for intf, vlan in access.items():
-#     print("interface FastEthernet" + intf)
-#     for command in access_template:
-#         if command.endswith("access vlan"):
-#             print(f" {command} {vlan}")
-#         else:
-#             print(f" {command}")
+for int_trunk,vlan_trunk in trunk.items():
+    print(f"interface FastEthernet{int_trunk}")
+    for trunk_templ in trunk_template:
+        if trunk_templ.endswith("vlan") and vlan_trunk[0] == "add":
+            trunk_templ = " " + trunk_templ + " add"
+            i = 0
+            for vlans in vlan_trunk:
+                if vlans.isdigit() and i == 0:
+                    trunk_templ = trunk_templ + " " + vlans
+                    i+=1
+                elif vlans.isdigit():
+                    trunk_templ = trunk_templ + "," + vlans
+            print(trunk_templ)
+        elif  trunk_templ.endswith("vlan") and vlan_trunk[0] == "only":
+            trunk_templ = " " + trunk_templ
+            i = 0
+            for vlans in vlan_trunk:
+                 if vlans.isdigit() and i == 0:
+                     trunk_templ = trunk_templ + " " + vlans
+                     i+=1
+                 elif vlans.isdigit():
+                     trunk_templ = trunk_templ + "," + vlans
+            print(trunk_templ)
+        elif  trunk_templ.endswith("vlan") and vlan_trunk[0] == "del":
+            trunk_templ = " " + trunk_templ + " remove"
+            i = 0
+            for vlans in vlan_trunk:
+                 if vlans.isdigit() and i == 0:
+                     trunk_templ = trunk_templ + " " + vlans
+                     i+=1
+                 elif vlans.isdigit():
+                    trunk_templ = trunk_templ + "," + vlans
+            print(trunk_templ)
+
+        else:
+            trunk_templ = " " + trunk_templ
+            print(trunk_templ)
