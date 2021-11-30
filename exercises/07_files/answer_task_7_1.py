@@ -15,13 +15,17 @@ Outbound Interface    FastEthernet0/0
 
 """
 
-result = []
-with open("ospf.txt") as f:
-    for lines in f:
-        result = lines.split()
-        print("Prefix", " "*20, result[1], "\n"
-              "AD/Metric", " "*17, result[2][1:-1], "\n"
-              "Next-Hop", " "*18, result[4][:-1], "\n"
-              "Last update", " "*15, result[5][:-1], "\n"
-              "Outbound Interface", " "*8, result[6]
-             )
+output = "\n{:25} {}" * 5
+
+with open("ospf.txt", "r") as f:
+    for line in f:
+        route = line.replace(",", " ").replace("[", "").replace("]", "")
+        route = route.split()
+
+        print(output.format(
+                "Prefix", route[1],
+                "AD/Metric", route[2],
+                "Next-Hop", route[4],
+                "Last update", route[5],
+                "Outbound Interface", route[6],
+        ))
