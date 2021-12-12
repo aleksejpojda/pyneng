@@ -44,7 +44,8 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
-
+from sys import argv
+from pprint import pprint
 ignore = ["duplex", "alias", "configuration"]
 
 
@@ -59,8 +60,40 @@ def ignore_command(command, ignore):
     * True, если в команде содержится слово из списка ignore
     * False - если нет
     """
+
     ignore_status = False
     for word in ignore:
         if word in command:
             ignore_status = True
     return ignore_status
+
+command_up = ""
+command_down = []
+command = {}
+def convert_config_to_dict(config_filename):
+    with open(config_filename) as f:
+        output = f.read()
+        cfg_section = output.replace(" "*9, "").split("!\n")
+        for section in cfg_section:
+#            command_down = []
+#         print(section.split("\n"))
+            section_cfg_list = section.split("\n")
+#            section_cfg_list = section_cfg_list.lstrip("\n")
+#         print("-"*20)
+            for line in section_cfg_list:
+                line = line.lstrip("\n")
+                if line.startswith("!") == False:
+                    if line.startswith(" ") == False:
+                        if ignore_command(line, ignore) == False:
+                            command_up = line
+                            command[line] = []
+                            command_down = []
+                    elif line.startswith(" ") == True:
+                        if ignore_command(line, ignore) == False:
+                            command_down.append(line.strip())
+                    command[command_up] = command_down
+#                    print(command)
+        del command['']
+        return command
+
+#pprint(convert_config_to_dict("config_sw1.txt"))
