@@ -34,3 +34,41 @@
  '172.21.41.129', '172.21.41.130', '172.21.41.131', '172.21.41.132']
 
 """
+
+import ipaddress
+
+def check_if_ip_is_network(ip_address):
+    try:
+        ipaddress.ip_network(ip_address)
+        return True
+    except ValueError:
+        return False
+
+
+
+def convert_ranges_to_ip_list(ip_list):
+    correct_ip_list = []
+    first_octs = []
+    list_ip = []
+    start_ip = ""
+    end_ip = ""
+    for ip in ip_list:
+        if check_if_ip_is_network(ip):
+            correct_ip_list.append(ip)
+        else:
+            first_octs = list(ip.split(".")[0:3])
+            start_ip = ip.split("-")[0].split(".")[-1]
+            if len(ip.split("-")[-1]) > 3:
+                end_ip = ip.split("-")[-1].split(".")[-1]
+            else:
+                end_ip = ip.split("-")[-1]
+            #list_ip = list(range(start_ip, end_ip))
+            list_ip = list(range(int(start_ip), int(end_ip)+1))
+            for last_octs in list_ip:
+                 correct_ip_list.append(".".join(first_octs) + "." + str(last_octs))
+
+
+    return correct_ip_list
+
+if __name__ == "__main__":
+    print(convert_ranges_to_ip_list(['8.8.4.4', '1.1.1.1-3', '172.21.41.128-172.21.41.132']))
