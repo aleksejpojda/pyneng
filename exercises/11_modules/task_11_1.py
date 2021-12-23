@@ -44,6 +44,20 @@ def parse_cdp_neighbors(command_output):
     Плюс учимся работать с таким выводом.
     """
 
+    dev_from = ""
+    dev_int_from = ()
+    dev_int_to = ()
+    dev_int_result = {}
+    for line in command_output.split("\n"):
+        if line.strip():
+            if not line.find(">") == -1:
+                dev_from = line.split(">")[0]
+            elif line[-1].isdigit():
+                dev_int_from = (dev_from, line.split()[1] +  line.split()[2])
+                dev_int_to = (line.split()[0], line.split()[-2] +  line.split()[-1])
+                dev_int_result[dev_int_from] = dev_int_to
+    return dev_int_result
+
 
 if __name__ == "__main__":
     with open("sh_cdp_n_sw1.txt") as f:

@@ -92,6 +92,7 @@ def test_function_return_value_different_args():
     assert (
         type(return_value) == dict
     ), f"По заданию функция должна возвращать словарь, а возвращает {type(return_value).__name__}"
+    print(return_value)
     assert len(correct_return_value) == len(
         return_value
     ), "В словаре, который описывает топологию есть дублирующиеся линки"
