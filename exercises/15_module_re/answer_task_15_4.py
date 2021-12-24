@@ -5,11 +5,9 @@
 Создать функцию get_ints_without_description, которая ожидает как аргумент
 имя файла, в котором находится конфигурация устройства.
 
+
 Функция должна обрабатывать конфигурацию и возвращать список имен интерфейсов,
 на которых нет описания (команды description).
-
-Пример итогового списка:
-["Loopback0", "Tunnel0", "Ethernet0/1", "Ethernet0/3.100", "Ethernet1/0"]
 
 Пример интерфейса с описанием:
 interface Ethernet0/2
@@ -24,25 +22,14 @@ interface Loopback0
 
 Проверить работу функции на примере файла config_r1.txt.
 """
-
 import re
-from sys import argv
 
-def get_ints_without_description(file):
-    regex_des = r"interface (?P<intf>\S+)\n description"
-    regex_intf = r"interface (?P<intf>\S+\d)"
-    intf = ""
-    output = ""
-    intf_list = []
-    with open(file) as f:
-        output = f.read()
-        for line in output.split("!"):
-            m = re.search(regex_intf, line)
-            if m:
-                m1 = re.search(regex_des, line)
-                if not m1:
-                    intf_list.append(m.group("intf"))
-    return intf_list
 
-if __name__ == "__main__":
-    print(get_ints_without_description("config_r1.txt"))
+def get_ints_without_description(config):
+    regex = re.compile(r"!\ninterface (?P<intf>\S+)\n"
+                       r"(?P<descr> description \S+)?")
+    with open(config) as src:
+        match = regex.finditer(src.read())
+        result = [m.group('intf') for m in match if m.lastgroup == 'intf']
+        return result
+
