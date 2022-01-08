@@ -56,3 +56,45 @@ def convert_datetime_to_str(datetime_obj):
     Конвертирует строку с датой в формате 11/10/2019 14:05 в объект datetime.
     """
     return datetime.datetime.strftime(datetime_obj, "%d/%m/%Y %H:%M")
+
+
+import re
+import csv
+
+
+def list_dublicate(input_list, number_columns):
+    '''
+    number_columns номер столбца с нулевого в котором искать повторения
+    '''
+    for line in input_list:
+
+
+
+
+def write_last_log_to_csv(source_log, output):
+    data = {}
+    regex = r"(?P<name>.+?),(?P<Email>.+?),(?P<change>\d+.+)"
+    with open(source_log) as f:
+#        output = f.read()
+        reader = csv.DictReader(f)
+        for row in reader:
+            data.update(row)
+        print()
+        headers = next(reader)
+        headers1 = re.match(r"(?P<Headers>\D+,\D+,\D+ \D+)\n", output.strip("\n"))
+        print(headers1.group("Headers"))
+        result_list = re.findall(regex, output.strip("\n"))
+        for line in result_list:
+            data.append(list(match.groups()))
+        print(data)
+
+#        print('Headers: ', headers)
+#        for row in reader:
+#            print(row)
+#            result_dict.update(row[1])
+#        print(result_dict)
+ #       convert_str_to_datetime(line[2])
+
+
+if __name__ == "__main__":
+    print(write_last_log_to_csv("mail_log.csv", "out.txt"))
