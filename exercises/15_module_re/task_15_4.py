@@ -29,20 +29,35 @@ import re
 from sys import argv
 
 def get_ints_without_description(file):
+    output = ""
+    intf = []
     regex_des = r"interface (?P<intf>\S+)\n description"
     regex_intf = r"interface (?P<intf>\S+\d)"
-    intf = ""
-    output = ""
-    intf_list = []
     with open(file) as f:
         output = f.read()
-        for line in output.split("!"):
-            m = re.search(regex_intf, line)
-            if m:
-                m1 = re.search(regex_des, line)
-                if not m1:
-                    intf_list.append(m.group("intf"))
-    return intf_list
+        intf = re.findall(regex_intf, output)
+        match = re.finditer(regex_des, output)
+        if match:
+            for m in match:
+                intf.remove(m.group("intf"))
+    return intf
+
+
+#def get_ints_without_description(file):
+#    regex_des = r"interface (?P<intf>\S+)\n description"
+#    regex_intf = r"interface (?P<intf>\S+\d)"
+#    intf = ""
+#    output = ""
+#    intf_list = []
+#    with open(file) as f:
+#        output = f.read()
+#        for line in output.split("!"):
+#            m = re.search(regex_intf, line)
+#            if m:
+#                m1 = re.search(regex_des, line)
+#                if not m1:
+#                    intf_list.append(m.group("intf"))
+#    return intf_list
 
 if __name__ == "__main__":
     print(get_ints_without_description("config_r1.txt"))

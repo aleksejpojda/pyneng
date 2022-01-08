@@ -40,18 +40,38 @@ def convert_ios_nat_to_asa(input_file, output_file):
     file_out = ""
     regex = r"ip nat \D+ (?P<ip>\d.+\d) +(?P<port>\d+) interface (?P<intf>\S+) (?P<in_port>\d+)"
     with open(input_file) as f:
-        for line in f:
-            m = re.search(regex, line)
-            if m:
-                file_out += "object network LOCAL_" + m.group("ip")+"\n"
-                file_out += " host "+m.group("ip")+"\n"
+        output = f.read()
+        match = re.finditer(regex, output)
+        if match:
+            for m in match:
                 file_out += (
-                " nat (inside,outside) static interface service tcp " + m.group("port") + \
-                " " + m.group("in_port") + "\n"
-                )
+                    "object network LOCAL_{}\n".format(m.group("ip")) +\
+                    " host {}\n".format(m.group("ip")) +\
+                    " nat (inside,outside) static interface service tcp {} {}\n"\
+                    .format(m.group("port"), m.group("in_port"))
+                    )
     with open(output_file, "w") as f:
         f.write(file_out)
     return None
+
+
+
+#def convert_ios_nat_to_asa(input_file, output_file):
+#    file_out = ""
+#    regex = r"ip nat \D+ (?P<ip>\d.+\d) +(?P<port>\d+) interface (?P<intf>\S+) (?P<in_port>\d+)"
+#    with open(input_file) as f:
+#        for line in f:
+#            m = re.search(regex, line)
+#            if m:
+#                file_out += "object network LOCAL_" + m.group("ip")+"\n"
+#                file_out += " host "+m.group("ip")+"\n"
+#                file_out += (
+#                " nat (inside,outside) static interface service tcp " + m.group("port") + \
+#                " " + m.group("in_port") + "\n"
+#                )
+#    with open(output_file, "w") as f:
+#        f.write(file_out)
+#    return None
 
 if __name__ == "__main__":
     print(convert_ios_nat_to_asa("cisco_nat_config.txt", "cisco_asa_nat_config.txt"))

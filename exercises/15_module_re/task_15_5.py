@@ -35,14 +35,14 @@ def generate_description_from_cdp(cdp_file):
     with open(cdp_file) as f:
         regex_router = (
             r"(?P<dev_id>\S+\d+) +(?P<port_local>\S+ \d+/\d+) "
-            r"+\S+\D+\S+ +(?P<port_remoute>\S+ \d+/\d+)"
+            r"+\S+\D+\S+ +(?P<port_remote>\S+ \d+/\d+)"
             )
         for line in f:
             m = re.search(regex_router, line)
             if m:
                 des_dict[m.group("port_local")] = (
-                    "description Connected to " + m.group("dev_id") + \
-                    " port " + m.group("port_remoute")
+                    "description Connected to {} port {}".\
+                    format(m.group("dev_id"), m.group("port_remote"))
                     )
     return des_dict
 

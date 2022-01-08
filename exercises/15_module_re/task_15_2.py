@@ -25,21 +25,38 @@
 import re
 from sys import argv
 
-def parse_sh_ip_int_br(config_file):
+def parse_sh_ip_int_br(status_file):
     regex = (
     r"(?P<intf>\S+) +"  #интерфейс
     r"(?P<ip>\d.+\d|unassigned) "    #ip
     r"+\S+ \S+ +"   #пропускаем
-    r"(?P<status>up|(administratively )*down) "     #статус
+    r"(?P<status>up|administratively down|down) "     #статус
     r"+(?P<prot>up|down)"   #протокол
     )
-    lists = []
-    with open(config_file) as f:
-        for line in f:
-            m = re.search(regex, line)
-            if m:
-                lists.append(tuple(m.group("intf", "ip", "status", "prot")))
-    return lists
+    result = []
+    with open(status_file) as f:
+        output = f.read()
+        m = re.finditer(regex, output)
+        for match in m:
+            result.append(match.groups())
+    return result
+
+
+#def parse_sh_ip_int_br(config_file):
+#    regex = (
+#    r"(?P<intf>\S+) +"  #интерфейс
+#    r"(?P<ip>\d.+\d|unassigned) "    #ip
+#    r"+\S+ \S+ +"   #пропускаем
+#    r"(?P<status>up|(administratively )*down) "     #статус
+#    r"+(?P<prot>up|down)"   #протокол
+#    )
+#    lists = []
+#    with open(config_file) as f:
+#        for line in f:
+#            m = re.search(regex, line)
+#            if m:
+#                lists.append(tuple(m.group("intf", "ip", "status", "prot")))
+#    return lists
 
 if __name__ == "__main__":
     print(parse_sh_ip_int_br("sh_ip_int_br_2.txt"))
