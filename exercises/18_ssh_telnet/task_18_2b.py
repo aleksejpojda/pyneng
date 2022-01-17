@@ -98,3 +98,48 @@ commands_with_errors = ["logging 0255.255.1", "logging", "a"]
 correct_commands = ["logging buffered 20010", "ip http server"]
 
 commands = commands_with_errors + correct_commands
+
+from pprint import pprint
+import netmiko
+import yaml
+
+#commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
+
+def send_config_commands(device, config_commands, log=True):
+    output = ""
+    correct = {}
+    incorrect = {}
+    out_list = []
+    out = ()
+    if log == True:
+        print(f"Подключаюсь к {device['host']}")
+    with netmiko.Netmiko(**device) as ssh:
+        ssh.enable()
+        for command in config_commands:
+            errors = ["Invalid input detected at '^' marker.", "Incomplete command.", f'Ambiguous command:  "{command}"']
+            result = ssh.send_config_set(command)
+            correct[command] = result
+            for error in errors:
+                if error in result:
+                    print(
+                        f'Команда "{command}" выполнилась с ошибкой "{error}" на устройстве {device["host"]}'
+                         )
+                    incorrect[command] = result
+                    del correct[command]
+    #print(correct)
+    out = (correct, incorrect)
+    #out = tuple(out_list)
+    #pprint(out, width=120)
+    return out
+
+
+
+
+if __name__ == "__main__":
+ #   command = "sh ip int br"
+ #   commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
+    with open("devices.yaml") as f:
+        devices = yaml.safe_load(f)
+
+    for dev in devices:
+        print(send_config_commands(dev, commands))
