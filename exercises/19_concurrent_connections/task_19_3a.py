@@ -56,3 +56,31 @@ commands = {
     "192.168.100.1": ["sh ip int br", "sh int desc"],
     "192.168.100.2": ["sh int desc"],
 }
+
+from concurrent.futures import ThreadPoolExecutor
+from task_19_2 import send_show_command
+import yaml
+from netmiko import ConnectHandler
+
+def send_command_to_devices(devices, commands_dict, filename, limit=3):
+    result_list = []
+    with ThreadPoolExecutor(max_workers=limit) as ex:
+        for dev in devices:
+            if len(commands_dict[dev["host"]]) > 1:
+                for command in commands_dict[dev["host"]]:
+                    result = ex.submit(send_show_command, dev, command)
+                    result_list.append(result)
+            else:
+                command = commands_dict[dev["host"]][0]
+                result = ex.submit(send_show_command, dev, command)
+                result_list.append(result)
+    with open(filename, "w") as f:
+        for res in result_list:
+            f.writelines(res.result() + "\n")
+    return
+
+if __name__ == "__main__":
+    with open("devices.yaml") as f:
+        devices = yaml.safe_load(f)
+
+    send_command_to_devices(devices, commands, "sh_dict.txt")

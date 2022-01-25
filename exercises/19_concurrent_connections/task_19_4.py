@@ -105,3 +105,54 @@ R3#
 
 Для выполнения задания можно создавать любые дополнительные функции.
 """
+
+from concurrent.futures import ThreadPoolExecutor
+from task_19_2 import send_show_command
+import yaml
+from netmiko import ConnectHandler
+from task_18_1 import send_show_command
+from task_18_2 import send_config_commands
+
+
+commands = ['router ospf 55', 'no network 0.0.0.0 255.255.255.255 area 0', 'no router ospf 55']
+
+def send_show_command(device, command):
+    with ConnectHandler(**device) as ssh:
+        ssh.enable()
+        hostname = ssh.find_prompt()
+        result = ssh.send_command(command, strip_command=False)
+        out = hostname + result
+    return out
+
+def send_config_commands(device, config_commands):
+    with ConnectHandler(**device) as ssh:
+        ssh.enable()
+        hostname = ssh.find_prompt()
+        result = ssh.send_config_set(config_commands, strip_command=False)
+        output = hostname + result
+    return output
+
+def send_commands_to_devices(devices, filename, *, config=None, show=None, limit = 3):
+    future_list = []
+    if show and config:
+        raise ValueError("Можно передавать только один из аргументов show/config")
+    elif show:
+        with ThreadPoolExecutor(max_workers=limit) as ex:
+            for dev in devices:
+                result = ex.submit(send_show_command, dev, show)
+                future_list.append(result)
+    elif config:
+        with ThreadPoolExecutor(max_workers=limit) as ex:
+            for dev in devices:
+                result = ex.submit(send_config_commands, dev, config)
+                future_list.append(result)
+    with open(filename, "w") as f:
+        for res in future_list:
+            f.writelines(res.result() + "\n")
+    return
+
+if __name__ == "__main__":
+    with open("devices.yaml") as f:
+        devices = yaml.safe_load(f)
+
+    send_commands_to_devices(devices, "sh_dict.txt", config = commands)

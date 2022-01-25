@@ -23,3 +23,31 @@
 а затем запустить эту функцию в разных потоках для разных
 IP-адресов с помощью concurrent.futures (это надо сделать в функции ping_ip_addresses).
 """
+
+import subprocess
+from concurrent.futures import ThreadPoolExecutor
+import logging
+
+
+list_all_ip = ["192.168.100.1", "192.168.100.20", "192.168.100.3", "192.168.110.100"]
+
+def ping_ip(ip_addresses):
+    result = subprocess.run(["ping", "-c 3", ip_addresses], stdout=subprocess.DEVNULL)
+    out = result.returncode
+    return ip_addresses, out
+
+def ping_ip_addresses(ip_list, limit=3):
+    list_good = []
+    list_bad = []
+    with ThreadPoolExecutor(max_workers=limit) as ex:
+        result = ex.map(ping_ip, ip_list)
+        for ip, code in result:
+            if code == 0:
+                list_good.append(ip)
+            else:
+                list_bad.append(ip)
+    list_good_bad = (list_good, list_bad)
+    return list_good_bad
+
+if __name__ == "__main__":
+    print(ping_ip_addresses(list_all_ip))
