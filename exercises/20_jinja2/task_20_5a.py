@@ -38,6 +38,15 @@
 Они должны быть, но тест упрощен, чтобы было больше свободы выполнения.
 """
 
+from pprint import pprint
+from jinja2 import Environment, FileSystemLoader
+import yaml
+from netmiko import ConnectHandler
+from task_18_1 import send_show_command
+import re
+from task_20_1 import generate_config
+from task_18_2 import send_config_commands
+
 data = {
     "tun_num": None,
     "wan_ip_1": "192.168.100.1",
@@ -45,3 +54,46 @@ data = {
     "tun_ip_1": "10.0.1.1 255.255.255.252",
     "tun_ip_2": "10.0.1.2 255.255.255.252",
 }
+
+def find_intf(src_device_params, dst_device_params):
+    regex = r"Tunnel\d+"
+    result_src = send_show_command(src_device_params, "sh ip int br | in Tunnel")
+    result_dst = send_show_command(dst_device_params, "sh ip int br | in Tunnel")
+    src = re.findall(regex, result_src)
+    dst = re.findall(regex, result_dst)
+    if src or dst:
+        out = set(src) | set(dst)
+        result = add_uniqe(out)
+    else:
+        result = "0"
+    return result
+
+def add_uniqe(set_1):
+    name_intf = ",".join(re.findall(r"\D+", list(set_1)[0]))
+    num_intf = int(",".join(re.findall(r"\d+", list(set_1)[0])))
+    lenght = len(set_1)
+    num_new=0
+    while lenght == len(set_1):
+        num_new +=1
+        intf_new = name_intf+str(num_new)
+        set_1.add(intf_new)
+    return str(num_new)
+
+def configure_vpn(src_device_params, dst_device_params, src_template, dst_template, vpn_data_dict):
+    vpn_data_dict["tun_num"] = find_intf(src_device_params, dst_device_params)
+    vpn_src = generate_config(src_template, vpn_data_dict)
+    vpn_dst = generate_config(dst_template, vpn_data_dict)
+    result_src = send_config_commands(src_device_params, vpn_src.split("\n"))
+    result_dst = send_config_commands(dst_device_params, vpn_dst.split("\n"))
+    output_tuple = (result_src, result_dst)
+    return output_tuple
+
+if __name__ == "__main__":
+    with open("devices.yaml") as f:
+        devices = yaml.safe_load(f)
+#    print(add_uniqe(find_set_intf(devices[0], devices[1])))
+#    print(find_intf(devices[0], devices[1]))
+    print(configure_vpn(
+        devices[0], devices[1], "templates/gre_ipsec_vpn_1.txt",
+        "templates/gre_ipsec_vpn_2.txt", data
+        ))
