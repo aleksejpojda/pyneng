@@ -60,6 +60,7 @@ def send_command_to_devices(devices, commands_dict, filename, limit=3):
             command = commands_dict[dev["host"]]
             result = ex.submit(send_show_command, dev, command)
             result_list.append(result)
+        print(result_list)
     with open(filename, "w") as f:
         for res in result_list:
             f.writelines(res.result() + "\n")
