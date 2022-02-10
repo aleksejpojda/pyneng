@@ -39,17 +39,16 @@
 и устройствах из devices.yaml.
 """
 
-from netmiko import ConnectHandler
 import yaml
 from task_21_4 import send_and_parse_show_command
 from concurrent.futures import ThreadPoolExecutor
+from pprint import pprint
 
 
 def send_and_parse_command_parallel(devices, command, templates_path, limit=3):
     out_dict = {}
     with ThreadPoolExecutor(max_workers=limit) as ex:
         for dev in devices:
-            #command = commands_dict[dev["host"]]
             out = ex.submit(send_and_parse_show_command, dev, command)
             out_dict[dev["host"]] = out.result()
     return out_dict
@@ -57,4 +56,4 @@ def send_and_parse_command_parallel(devices, command, templates_path, limit=3):
 if __name__ == "__main__":
     with open("devices.yaml") as f:
         devices = yaml.safe_load(f)
-    print(send_and_parse_command_parallel(devices, "sh ip int br", templates_path="templates"))
+    pprint(send_and_parse_command_parallel(devices, "sh cdp ne det", templates_path="templates"))

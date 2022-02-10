@@ -50,3 +50,47 @@ up      \r\nEthernet0/1                192.168.200.1   YES NVRAM  up...'
 
 
 """
+
+import telnetlib
+import time
+from task_21_3 import parse_command_dynamic
+
+
+class CiscoTelnet:
+    def __init__(self, ip, username, password, secret):
+        self.telnet = telnetlib.Telnet(ip)
+        self.telnet.read_until(b'Username')
+        self.telnet.write(username.encode("ascii")+b"\n")
+        self.telnet.read_until(b'Password')
+        self.telnet.write(password.encode("ascii")+b"\n")
+        self.telnet.write(b"enable\n")
+        self.telnet.read_until(b'Password')
+        self.telnet.write(secret.encode("ascii")+b"\n")
+        self.telnet.write(b"terminal length 0\n")
+        time.sleep(0.5)
+        self.telnet.read_very_eager()
+
+    def _write_line(self, line):
+        return self.telnet.write(line.encode("utf-8") + b"\n")
+
+    def send_show_command(self, show_command, parse=True, templates = "templates", index = "index"):
+        self._write_line(show_command)
+        time.sleep(0.5)
+        out = self.telnet.read_very_eager().decode('utf-8')
+        if parse:
+            attrib = {}
+            attrib["Command"] = show_command
+            out_parse = parse_command_dynamic(out, attrib, index, templates)
+            return out_parse
+        else:
+            return out
+
+if __name__ == "__main__":
+    r1_params = {
+                'ip': '192.168.100.1',
+                'username': 'cisco',
+                'password': 'cisco',
+                'secret': 'cisco'}
+    r1 = CiscoTelnet(**r1_params)
+    print(r1.send_show_command("sh ip int br", parse=False))
+    print(r1.send_show_command("sh ip int br", parse=True))

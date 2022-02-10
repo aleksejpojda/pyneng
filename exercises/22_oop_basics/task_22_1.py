@@ -44,3 +44,16 @@ topology_example = {
     ("SW1", "Eth0/2"): ("R2", "Eth0/0"),
     ("SW1", "Eth0/3"): ("R3", "Eth0/0"),
 }
+
+
+class Topology:
+    def __init__(self, topology_dict):
+        topology_new = {}
+        for item_val, item_keys in topology_dict.items():
+            if not topology_new.get(item_val):
+                topology_new.update({item_keys: item_val})
+        self.topology = topology_new
+
+if __name__=="__main__":
+    t = Topology(topology_example)
+    print(t.topology)
