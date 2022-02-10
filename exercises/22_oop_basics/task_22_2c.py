@@ -112,20 +112,15 @@ class CiscoTelnet:
             result = self._send_command(config_commands)
             out = self._check_errors(result, config_commands, strict)
             self.telnet.write(b"end\n")
-#            time.sleep(0.5)
-#            out_dict[config_commands] = self.telnet.read_very_eager().decode('utf-8')
-#            out = self._check_errors(out_dict, strict)
         else:
             for command in config_commands:
                 result = self._send_command(command)
                 output = self._check_errors(result, command, strict)
                 out += output
             self.telnet.write(b"end\n")
-#            out = self._check_errors(out_dict, strict)
         return out
 
     def _check_errors(self, output_config_commands, comm, strict=True):
-#        for comm, out in output_config_commands.items():
         out_err = str(re.findall(r"%.+", output_config_commands))[1:-1]
         if strict == True and "%" in output_config_commands:
             raise ValueError(f'При выполнении команды "{comm}" на устройстве {self.ip} возникла ошибка -> {out_err}')
