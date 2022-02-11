@@ -75,3 +75,66 @@ topology_example2 = {
     ("R1", "Eth0/4"): ("R7", "Eth0/0"),
     ("R1", "Eth0/6"): ("R9", "Eth0/0"),
 }
+class Topology:
+    def __init__(self, topology_dict):
+        self.topology = self._normalize(topology_dict)
+
+    def _normalize(self, topology_dict):
+        topology_new = {}
+        for item_val, item_keys in topology_dict.items():
+            if not topology_new.get(item_val):
+                topology_new.update({item_keys: item_val})
+        return topology_new
+
+    def __add__(self, other):
+        sum_dict = {}
+        sum_dict.update(self.topology)
+        sum_dict.update(other.topology)
+        return Topology(sum_dict)
+
+    def delete_link(self, link_from, link_to):
+        if link_from == self.topology.keys() and self.topology[link_from] == link_to:
+            del self.topology[link_from]
+        elif link_to == self.topology.keys() and self.topology[link_to] == link_from:
+            del self.topology[link_to]
+        else:
+            print("Такого соединения нет")
+
+    def delete_node(self, node):
+        del_list = []
+        for key, val in self.topology.items():
+            if node in key or node in val:
+                del_list.append(key)
+        if del_list:
+            for k in del_list:
+                del self.topology[k]
+        else:
+            print("Такого устройства нет")
+
+    def add_link(self,  link_from, link_to):
+        port = False
+        node = False
+        for key, val in self.topology.items():
+            if link_from == key and link_to == val:
+                node = True
+            elif link_to == key and link_from == val:
+                node = True
+            elif link_from == key or link_to == val:
+                port = True
+            elif link_to == key or link_from == val:
+                port = True
+        if port:
+            print("Cоединение с одним из портов существует")
+        elif node:
+            print("Такое соединение существует")
+        else:
+            self.topology[link_from] = link_to
+
+if __name__=="__main__":
+    t = Topology(topology_example)
+#    print(t.topology)
+#    t.add_link(("R17", "Eth4/0"), ("SW9", "Eth0/7"))
+#    print(t.topology)
+    t2 = Topology(topology_example2)
+    t3 = t+t2
+    print(t3.topology)
