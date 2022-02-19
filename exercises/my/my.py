@@ -5,8 +5,11 @@ import re, yaml
 from concurrent.futures import ThreadPoolExecutor
 from rich.table import Table
 from rich.console import Console
+from datetime import datetime
+from sys import argv
 
 
+time = datetime.now()
 device1 = {'device_type': 'cisco_ios',
           "ip": "192.168.100.1",
           "username": "cisco",
@@ -124,11 +127,54 @@ def tabl(device, limit=3):
                 '\n'.join(output_dict[name]["sub"]["down"]), '\n'.join(output_dict[name]["sub"]["up"])
                 )
     c.print(t)
+    print("Время выполнения скрипта", datetime.now() - time)
+    print(f"Количество одновременных подключений {limit}")
+#    tabl_count_port(output_dict)
+
+"""
+def tabl_count_port(output_dict):
+    c = Console()
+    t = Table()
+    for name in "Device, Port Type, Admin down, Down, Up".split(","):
+        t.add_column(name, max_width=22)
+
+    for name, data in output_dict.items():
+        res = counter(output_dict, "phisical")
+        if res:
+        t.add_row(name, "phisical", ",".join(res[name],
+            str(len(output_dict[name]["phisical"]["down"])), str(len(output_dict[name]["phisical"]["up"])))
+        t.add_row(None, "loopback", str(l_a), str(l_d), str(l_u))
+        t.add_row(None, "tunnel", str(len(output_dict[name]["tunnel"]["admin"])),
+            str(len(output_dict[name]["tunnel"]["down"])), str(len(output_dict[name]["tunnel"]["up"])))
+        t.add_row(None, "subinterface", str(len(output_dict[name]["sub"]["admin"])),
+            str(len(output_dict[name]["sub"]["down"])), str(len(output_dict[name]["sub"]["up"])))
+        t.add_row(None, None, None, None, None)
+    c.print(t)
+    """
+
+def counter(output_dict, port_type):
+    count_dict = {}
+    count_list = []
+    p_a = len(output_dict[name][port_type]["admin"])
+    p_u = len(output_dict[name][port_type]["down"])
+    p_d = len(output_dict[name][port_type]["up"])
+    if p_a + p_u + p_d != 0:
+        cout_list.append(p_a)
+        cout_list.append(p_d)
+        cout_list.append(p_u)
+        count_dict[name] = cout_list
+        return count_dict
+    else: return None
+
 
 
 if __name__ == "__main__":
 #    print(show_ip_int(device))
     with open("devices_my.yaml") as f:
         devices = yaml.safe_load(f)
-        tabl(devices)
-    #print(send_show_command_to_devices(devices))
+    #print(argv[1])
+    if len(argv) > 1:
+        limit = int(argv[1])
+    else:
+        limit = 3
+    tabl(devices, limit=limit)
