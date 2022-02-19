@@ -2,7 +2,6 @@
 
 from netmiko import ConnectHandler
 import re, yaml
-from tabulate import tabulate
 from concurrent.futures import ThreadPoolExecutor
 from rich.table import Table
 from rich.console import Console
@@ -15,20 +14,22 @@ device1 = {'device_type': 'cisco_ios',
           'secret': 'cisco'}
 
 def send_show_command_to_devices(devices, limit=3):
+    """ Подключение на несколько устройств одновременно.
+    Принимает в себя список словарей с данными для подключения
+    к нескольким устройствам. Лимит по умолчанию 3 устройства.
+    Возвращает словарь с выводом устройства """
     out_dict = {}
     with ThreadPoolExecutor(max_workers=limit) as ex:
         result = ex.map(show_ip_int, devices)
     for res in result:
-        #print(res)
         out_dict.update(res)
     return out_dict
 
-def send_and_parse_command_parallel(devices, command, limit=3):
-    with ThreadPoolExecutor(max_workers=limit) as ex:
-        for dev in devices:
-            out = ex.submit(show_ip_int, dev, command)
-
 def show_ip_int(device):
+    """ Отправка команды 'sh ip int br'.
+    Принимает в себя словарь с данными для подключения
+    Возвращает вывод устройства, строка
+    Вызывает функцию 'parse_out' """
     with ConnectHandler(**device) as sw:
 #        sw.enable()
         out = sw.send_command("sh ip int br")
@@ -36,6 +37,11 @@ def show_ip_int(device):
     return out_dict
 
 def check_intf_type_status(list_dict, type_intf):
+    """ Определяем статус портов.
+    Принимает словарь со списком интерфейсов и состоянием,
+    вторая переменная тип порта.
+    Возвращает словарь для одного типа порта
+    ключ: состояние порта, значение: список портов """
     list_intf_up = []
     list_intf_down = []
     list_intf_admin = []
@@ -56,7 +62,12 @@ def check_intf_type_status(list_dict, type_intf):
     return status_dict
 
 def parse_out(out_ip_int, dev_ip):
- #   device_ip = dev_ip
+    """ Создаем словарь для устройства по типу портов и их состоянию
+    Принимает строку с выводом от устройства и его адрес.
+    Возвращает словарь: ключ - адрес устройства
+    внутри словарь ключи: типы портов
+    внутри словарь ключи: состояние портов
+    Вызывает функцию 'check_intf_type_status' """
     out_list = []
     out_dict = {}
     out_dict[dev_ip] = {}
@@ -80,9 +91,17 @@ def parse_out(out_ip_int, dev_ip):
     out_dict[dev_ip] = intf_type_dict
     return out_dict
 
-def tabl(device):
+def tabl(device, limit=3):
+    """ Выводим красивую табличку
+    Принимает список словарей с данными для подключения
+    и максимальной количество одновременных подключений,
+    по умолчанию 3, необязательный параметр.
+    Основная функция для вызова кода. В качестве списка словарей
+    передается считаный файл yaml с данными для подключения к устройствам.
+    Вызывает функцию 'send_show_command_to_devices'
+    для отправки команд на несколько устройств"""
 #    output_dict = show_ip_int(device)
-    output_dict = send_show_command_to_devices(device)
+    output_dict = send_show_command_to_devices(device, limit=limit)
     c = Console()
     t = Table()
     for name in "Device, Port Type, Admin down, Down, Up".split(","):
@@ -109,9 +128,7 @@ def tabl(device):
 
 if __name__ == "__main__":
 #    print(show_ip_int(device))
-
-
     with open("devices_my.yaml") as f:
         devices = yaml.safe_load(f)
-        print(tabl(devices))
+        tabl(devices)
     #print(send_show_command_to_devices(devices))

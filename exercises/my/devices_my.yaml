@@ -6,16 +6,53 @@
   timeout: 10
   #fast_cli: true
 - device_type: cisco_ios
-  host: 192.168.100.2
-  username: cisco
-  password: cisco
+  host: 10.48.56.18
+  username: dz220883pap
+  password: Kolobok11
   secret: cisco
   timeout: 10
   #fast_cli: true
 - device_type: cisco_ios
-  host: 192.168.100.3
-  username: cisco
-  password: cisco
+  host: 10.48.56.11
+  username: dz220883pap
+  password: Kolobok11
   secret: cisco
   timeout: 10
   #fast_cli: true
+- device_type: cisco_ios
+  host: 10.48.56.14
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.48.56.15
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.48.247.171
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.48.56.16
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.48.56.9
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.48.56.17
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+
