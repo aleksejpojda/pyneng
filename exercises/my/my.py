@@ -86,8 +86,6 @@ def parse_out(out_ip_int, dev_ip):
     match = re.finditer(regex, out_ip_int)
     if match:
         out_list = [m.groupdict() for m in match]
-#        for m in match:
-#            out_list.append(m.groupdict())
         intf_type_dict["sub"] = check_intf_type_status(out_list, ".")
         intf_type_dict["tunnel"] = check_intf_type_status(out_list, "unnel")
         intf_type_dict["loopback"] = check_intf_type_status(out_list, "oopback")
@@ -104,7 +102,6 @@ def tabl(device, limit=3):
     передается считаный файл yaml с данными для подключения к устройствам.
     Вызывает функцию 'send_show_command_to_devices'
     для отправки команд на несколько устройств"""
-#    output_dict = show_ip_int(device)
     output_dict = send_show_command_to_devices(device, limit=limit)
     c = Console()
     t = Table()
@@ -131,7 +128,6 @@ def tabl(device, limit=3):
     c.print(t)
     print("Время выполнения скрипта", datetime.now() - time)
     print(f"Количество одновременных подключений {limit}")
-#    tabl_count_port
     counter(output_dict)
 
 
@@ -160,26 +156,18 @@ def tabl_count_port(count_dict):
 
 def counter(output_dict):
     count_dict = {}
-    #count_dict[name][port_type] = {}
     for name, data in output_dict.items():
-        #count_list = []
         count_dict[name] = {}
         for port, status in data.items():
             p_a = len(output_dict[name][port]["admin"])
             p_d = len(output_dict[name][port]["down"])
             p_u = len(output_dict[name][port]["up"])
-#            print(p_a, p_d, p_u)
-    #        if any([p_a, p_u, p_d]) == False:
             if p_a + p_u + p_d != 0:
                 count_dict[name][port] = {}
                 count_dict[name][port]["admin"] = str(p_a)
                 count_dict[name][port]["down"] = str(p_d)
                 count_dict[name][port]["up"] = str(p_u)
-                #count_dict[name] = count_list
-    #return count_dict
     tabl_count_port(count_dict)
-#        else:
-#            return None
 
 
 
