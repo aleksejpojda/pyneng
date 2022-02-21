@@ -71,7 +71,7 @@ def parse_out(out_ip_int, dev_ip):
     внутри словарь ключи: типы портов
     внутри словарь ключи: состояние портов
     Вызывает функцию 'check_intf_type_status' """
-    out_list = []
+    #out_list = []
     out_dict = {}
     out_dict[dev_ip] = {}
     key_type_list = ["phisical", "loopback", "tunnel", "sub"]
@@ -85,8 +85,9 @@ def parse_out(out_ip_int, dev_ip):
              r"(?P<status>up|down|administratively down)")
     match = re.finditer(regex, out_ip_int)
     if match:
-        for m in match:
-            out_list.append(m.groupdict())
+        out_list = [m.groupdict() for m in match]
+#        for m in match:
+#            out_list.append(m.groupdict())
         intf_type_dict["sub"] = check_intf_type_status(out_list, ".")
         intf_type_dict["tunnel"] = check_intf_type_status(out_list, "unnel")
         intf_type_dict["loopback"] = check_intf_type_status(out_list, "oopback")
@@ -126,45 +127,59 @@ def tabl(device, limit=3):
                 None, "subinterface", '\n'.join(output_dict[name]["sub"]["admin"]),
                 '\n'.join(output_dict[name]["sub"]["down"]), '\n'.join(output_dict[name]["sub"]["up"])
                 )
+        t.add_row(None, None, None, None, None)
     c.print(t)
     print("Время выполнения скрипта", datetime.now() - time)
     print(f"Количество одновременных подключений {limit}")
-#    tabl_count_port(output_dict)
+#    tabl_count_port
+    counter(output_dict)
 
-"""
-def tabl_count_port(output_dict):
+
+def tabl_count_port(count_dict):
     c = Console()
     t = Table()
     for name in "Device, Port Type, Admin down, Down, Up".split(","):
         t.add_column(name, max_width=22)
-
-    for name, data in output_dict.items():
-        res = counter(output_dict, "phisical")
-        if res:
-        t.add_row(name, "phisical", ",".join(res[name],
-            str(len(output_dict[name]["phisical"]["down"])), str(len(output_dict[name]["phisical"]["up"])))
-        t.add_row(None, "loopback", str(l_a), str(l_d), str(l_u))
-        t.add_row(None, "tunnel", str(len(output_dict[name]["tunnel"]["admin"])),
-            str(len(output_dict[name]["tunnel"]["down"])), str(len(output_dict[name]["tunnel"]["up"])))
-        t.add_row(None, "subinterface", str(len(output_dict[name]["sub"]["admin"])),
-            str(len(output_dict[name]["sub"]["down"])), str(len(output_dict[name]["sub"]["up"])))
+    for name, data in count_dict.items():
+        count_name_in_line = 0
+        for port_type, status in data.items():
+            if count_name_in_line == 0:
+                t.add_row(
+                    name, port_type, count_dict[name][port_type]["admin"],
+                    count_dict[name][port_type]["down"], count_dict[name][port_type]["up"]
+                    )
+                count_name_in_line +=1
+            else:
+                t.add_row(
+                    None, port_type, count_dict[name][port_type]["admin"],
+                    count_dict[name][port_type]["down"], count_dict[name][port_type]["up"]
+                    )
         t.add_row(None, None, None, None, None)
     c.print(t)
-    """
 
-def counter(output_dict, port_type):
+
+def counter(output_dict):
     count_dict = {}
-    count_list = []
-    p_a = len(output_dict[name][port_type]["admin"])
-    p_u = len(output_dict[name][port_type]["down"])
-    p_d = len(output_dict[name][port_type]["up"])
-    if p_a + p_u + p_d != 0:
-        cout_list.append(p_a)
-        cout_list.append(p_d)
-        cout_list.append(p_u)
-        count_dict[name] = cout_list
-        return count_dict
-    else: return None
+    #count_dict[name][port_type] = {}
+    for name, data in output_dict.items():
+        #count_list = []
+        count_dict[name] = {}
+        for port, status in data.items():
+            p_a = len(output_dict[name][port]["admin"])
+            p_d = len(output_dict[name][port]["down"])
+            p_u = len(output_dict[name][port]["up"])
+#            print(p_a, p_d, p_u)
+    #        if any([p_a, p_u, p_d]) == False:
+            if p_a + p_u + p_d != 0:
+                count_dict[name][port] = {}
+                count_dict[name][port]["admin"] = str(p_a)
+                count_dict[name][port]["down"] = str(p_d)
+                count_dict[name][port]["up"] = str(p_u)
+                #count_dict[name] = count_list
+    #return count_dict
+    tabl_count_port(count_dict)
+#        else:
+#            return None
 
 
 
