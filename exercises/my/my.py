@@ -93,7 +93,7 @@ def parse_out(out_ip_int, dev_ip):
     out_dict[dev_ip] = intf_type_dict
     return out_dict
 
-def tabl(device, limit=3):
+def tabl(output_dict):
     """ Выводим красивую табличку
     Принимает список словарей с данными для подключения
     и максимальной количество одновременных подключений,
@@ -102,7 +102,7 @@ def tabl(device, limit=3):
     передается считаный файл yaml с данными для подключения к устройствам.
     Вызывает функцию 'send_show_command_to_devices'
     для отправки команд на несколько устройств"""
-    output_dict = send_show_command_to_devices(device, limit=limit)
+#    output_dict = send_show_command_to_devices(device, limit=limit)
     c = Console()
     t = Table()
     for name in "Device, Port Type, Admin down, Down, Up".split(","):
@@ -127,8 +127,8 @@ def tabl(device, limit=3):
         t.add_row(None, None, None, None, None)
     c.print(t)
     print("Время выполнения скрипта", datetime.now() - time)
-    print(f"Количество одновременных подключений {limit}")
-    counter(output_dict)
+    print(f"Количество одновременных подключений {limits}")
+#    counter(output_dict)
 
 
 def tabl_count_port(count_dict):
@@ -167,7 +167,7 @@ def counter(output_dict):
                 count_dict[name][port]["admin"] = str(p_a)
                 count_dict[name][port]["down"] = str(p_d)
                 count_dict[name][port]["up"] = str(p_u)
-    tabl_count_port(count_dict)
+    return count_dict
 
 
 
@@ -177,7 +177,9 @@ if __name__ == "__main__":
         devices = yaml.safe_load(f)
     #print(argv[1])
     if len(argv) > 1:
-        limit = int(argv[1])
+        limits = int(argv[1])
     else:
-        limit = 3
-    tabl(devices, limit=limit)
+        limits = 3
+    output_dict = send_show_command_to_devices(devices, limit=limits)
+    tabl(output_dict)
+    tabl_count_port(counter(output_dict))
