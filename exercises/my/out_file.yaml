@@ -1,0 +1,119 @@
+"-------------------------\nDevice ID: sw-f1-vip-ed.privatbank.ua\nEntry address(es):\
+  \ \n  IP address: 10.48.56.18\nPlatform: cisco WS-C2960-48TT-L,  Capabilities: Switch\
+  \ IGMP \nInterface: GigabitEthernet0/18,  Port ID (outgoing port): GigabitEthernet0/1\n\
+  Holdtime : 128 sec\n\nVersion :\nCisco IOS Software, C2960 Software (C2960-LANBASEK9-M),\
+  \ Version 15.0(2)SE11, RELEASE SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\n\
+  Copyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by\
+  \ prod_rel_team\n\nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol\
+  \ ID=0x0112; payload len=27, value=00000000FFFFFFFF010221FF000000000000001B537FF900FF0000\n\
+  VTP Management Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n\
+  \    Power request id: 0, Power management id: 1, Power available: 0, Power management\
+  \ level: -1\nManagement address(es): \n  IP address: 10.48.56.18\n\n-------------------------\n\
+  Device ID: floor5-48ports-80.11.privatbank.ua\nEntry address(es): \n  IP address:\
+  \ 10.48.56.11\nPlatform: cisco WS-C2960-48TT-L,  Capabilities: Switch IGMP \nInterface:\
+  \ GigabitEthernet0/20,  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime :\
+  \ 150 sec\n\nVersion :\nCisco IOS Software, C2960 Software (C2960-LANBASEK9-M),\
+  \ Version 15.0(2)SE11, RELEASE SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\n\
+  Copyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by\
+  \ prod_rel_team\n\nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol\
+  \ ID=0x0112; payload len=27, value=00000000FFFFFFFF010221FF000000000000001D71755300FF0000\n\
+  VTP Management Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n\
+  \    Power request id: 0, Power management id: 1, Power available: 0, Power management\
+  \ level: -1\nManagement address(es): \n  IP address: 10.48.56.11\n\n-------------------------\n\
+  Device ID: sw-f1r101.privatbank.ua\nEntry address(es): \n  IP address: 10.48.56.14\n\
+  Platform: cisco WS-C2960-24TT-L,  Capabilities: Switch IGMP \nInterface: GigabitEthernet0/11,\
+  \  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime : 175 sec\n\nVersion :\n\
+  Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE11, RELEASE\
+  \ SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright\
+  \ (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by prod_rel_team\n\
+  \nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol ID=0x0112; payload\
+  \ len=27, value=00000000FFFFFFFF010221FF000000000000001E14913800FF0000\nVTP Management\
+  \ Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n    Power request\
+  \ id: 0, Power management id: 1, Power available: 0, Power management level: -1\n\
+  Management address(es): \n  IP address: 10.48.56.14\n\n-------------------------\n\
+  Device ID: DDHC-SW2-3750.privatbank.ua\nEntry address(es): \n  IP address: 10.48.247.171\n\
+  Platform: cisco WS-C3750G-24TS,  Capabilities: Switch IGMP \nInterface: GigabitEthernet0/1,\
+  \  Port ID (outgoing port): GigabitEthernet1/0/1\nHoldtime : 134 sec\n\nVersion\
+  \ :\nCisco IOS Software, C3750 Software (C3750-ADVIPSERVICESK9-M), Version 12.2(44)SE,\
+  \ RELEASE SOFTWARE (fc1)\nCopyright (c) 1986-2008 by Cisco Systems, Inc.\nCompiled\
+  \ Sat 05-Jan-08 00:29 by weiliu\n\nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C,\
+  \ Protocol ID=0x0112; payload len=27, value=00000000FFFFFFFF010221FF000000000000001AA127C500FF0000\n\
+  VTP Management Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n\
+  \    Power request id: 0, Power management id: 1, Power available: 0, Power management\
+  \ level: -1\nManagement address(es): \n  IP address: 10.48.247.171\n\n-------------------------\n\
+  Device ID: sw-k218-niz.privatbank.ua\nEntry address(es): \n  IP address: 10.48.56.15\n\
+  Platform: cisco WS-C2960-48TT-L,  Capabilities: Switch \nInterface: GigabitEthernet0/5,\
+  \  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime : 128 sec\n\nVersion :\n\
+  Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE11, RELEASE\
+  \ SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright\
+  \ (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by prod_rel_team\n\
+  \nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol ID=0x0112; payload\
+  \ len=27, value=00000000FFFFFFFF010221FF000000000000001F6D17BB00FF0000\nVTP Management\
+  \ Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n    Power request\
+  \ id: 0, Power management id: 1, Power available: 0, Power management level: -1\n\
+  Management address(es): \n  IP address: 10.48.56.15\n\n-------------------------\n\
+  Device ID: sw-uz24-56.12.privatbank.ua\nEntry address(es): \n  IP address: 10.48.56.12\n\
+  Platform: cisco WS-C2960-24TT-L,  Capabilities: Switch \nInterface: GigabitEthernet0/14,\
+  \  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime : 128 sec\n\nVersion :\n\
+  Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE11, RELEASE\
+  \ SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright\
+  \ (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by prod_rel_team\n\
+  \nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol ID=0x0112; payload\
+  \ len=27, value=00000000FFFFFFFF010221FF000000000000001E14B65600FF0000\nVTP Management\
+  \ Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n    Power request\
+  \ id: 0, Power management id: 1, Power available: 0, Power management level: -1\n\
+  Management address(es): \n  IP address: 10.48.56.12\n\n-------------------------\n\
+  Device ID: sw-k218-verh.privatbank.ua\nEntry address(es): \n  IP address: 10.48.56.16\n\
+  Platform: cisco WS-C2960-48TT-L,  Capabilities: Switch IGMP \nInterface: GigabitEthernet0/15,\
+  \  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime : 151 sec\n\nVersion :\n\
+  Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE11, RELEASE\
+  \ SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright\
+  \ (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by prod_rel_team\n\
+  \nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol ID=0x0112; payload\
+  \ len=27, value=00000000FFFFFFFF010221FF000000000000001F9D90DA80FF0000\nVTP Management\
+  \ Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n    Power request\
+  \ id: 0, Power management id: 1, Power available: 0, Power management level: -1\n\
+  Management address(es): \n  IP address: 10.48.56.16\n\n-------------------------\n\
+  Device ID: sw-dsl.privatbank.ua\nEntry address(es): \n  IP address: 10.48.56.9\n\
+  Platform: cisco WS-C2960-24TT-L,  Capabilities: Switch IGMP \nInterface: GigabitEthernet0/10,\
+  \  Port ID (outgoing port): GigabitEthernet0/1\nHoldtime : 172 sec\n\nVersion :\n\
+  Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE11, RELEASE\
+  \ SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright\
+  \ (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by prod_rel_team\n\
+  \nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol ID=0x0112; payload\
+  \ len=27, value=00000000FFFFFFFF010221FF000000000000001E14B67C80FF0000\nVTP Management\
+  \ Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n    Power request\
+  \ id: 0, Power management id: 1, Power available: 0, Power management level: -1\n\
+  Management address(es): \n  IP address: 10.48.56.9\n\n-------------------------\n\
+  Device ID: DDHC-R1-RB760\nEntry address(es): \n  IP address: 10.48.56.1\nPlatform:\
+  \ MikroTik,  Capabilities: Router \nInterface: GigabitEthernet0/2,  Port ID (outgoing\
+  \ port): vrrp1\nHoldtime : 115 sec\n\nVersion :\n6.48.3 (stable)\n\nadvertisement\
+  \ version: 1\nPower Available TLV:\n\n    Power request id: 0, Power management\
+  \ id: 0, Power available: 0, Power management level: 0\nManagement address(es):\
+  \ \n\n-------------------------\nDevice ID: DDHC-R1-RB760\nEntry address(es): \n\
+  \  IP address: 10.48.247.169\nPlatform: MikroTik,  Capabilities: Router \nInterface:\
+  \ GigabitEthernet0/2,  Port ID (outgoing port): vrrp200\nHoldtime : 115 sec\n\n\
+  Version :\n6.48.3 (stable)\n\nadvertisement version: 1\nPower Available TLV:\n\n\
+  \    Power request id: 0, Power management id: 0, Power available: 0, Power management\
+  \ level: 0\nManagement address(es): \n\n-------------------------\nDevice ID: DDHC-R1-RB760\n\
+  Entry address(es): \n  IP address: 192.168.247.169\nPlatform: MikroTik,  Capabilities:\
+  \ Router \nInterface: GigabitEthernet0/2,  Port ID (outgoing port): vlan200\nHoldtime\
+  \ : 115 sec\n\nVersion :\n6.48.3 (stable)\n\nadvertisement version: 1\nPower Available\
+  \ TLV:\n\n    Power request id: 0, Power management id: 0, Power available: 0, Power\
+  \ management level: 0\nManagement address(es): \n\n-------------------------\nDevice\
+  \ ID: DDHC-R1-RB760\nEntry address(es): \n  IP address: 10.48.56.253\nPlatform:\
+  \ MikroTik,  Capabilities: Router \nInterface: GigabitEthernet0/2,  Port ID (outgoing\
+  \ port): ether5\nHoldtime : 115 sec\n\nVersion :\n6.48.3 (stable)\n\nadvertisement\
+  \ version: 1\nPower Available TLV:\n\n    Power request id: 0, Power management\
+  \ id: 0, Power available: 0, Power management level: 0\nManagement address(es):\
+  \ \n\n-------------------------\nDevice ID: sw-k104.privatbank.ua\nEntry address(es):\
+  \ \n  IP address: 10.48.56.17\nPlatform: cisco WS-C2960-48TT-L,  Capabilities: Switch\
+  \ IGMP \nInterface: GigabitEthernet0/17,  Port ID (outgoing port): GigabitEthernet0/1\n\
+  Holdtime : 169 sec\n\nVersion :\nCisco IOS Software, C2960 Software (C2960-LANBASEK9-M),\
+  \ Version 15.0(2)SE11, RELEASE SOFTWARE (fc3)\nTechnical Support: http://www.cisco.com/techsupport\n\
+  Copyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Sat 19-Aug-17 09:34 by\
+  \ prod_rel_team\n\nadvertisement version: 2\nProtocol Hello:  OUI=0x00000C, Protocol\
+  \ ID=0x0112; payload len=27, value=00000000FFFFFFFF010221FF000000000000001B537F3D00FF0000\n\
+  VTP Management Domain: ''\nNative VLAN: 1\nDuplex: full\nPower Available TLV:\n\n\
+  \    Power request id: 0, Power management id: 1, Power available: 0, Power management\
+  \ level: -1\nManagement address(es): \n  IP address: 10.48.56.17\n"

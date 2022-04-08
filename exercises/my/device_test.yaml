@@ -1,0 +1,13 @@
+- device_type: cisco_ios
+  host: 10.1.77.2
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+- device_type: cisco_ios
+  host: 10.1.77.3
+  username: dz220883pap
+  password: Kolobok11
+  secret: cisco
+  timeout: 10
+
