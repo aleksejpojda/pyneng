@@ -1,12 +1,13 @@
 from concurrent.futures import ThreadPoolExecutor
 from netmiko import ConnectHandler
+import netmiko
 import yaml
 from itertools import repeat
 from pprint import pprint
 from sys import argv
 
 device1 = {'device_type': 'cisco_ios',
-           "host": "10.48.247.170",
+           "host": "10.48.56.47",
            "username": "dz220883pap",
            "password": "Kolobok11",
             'secret': ''}
@@ -30,10 +31,17 @@ def show_command(device, command):
     Возвращает вывод устройства, строка
     Вызывает функцию 'parse_out' """
 #    out_dict = {}
-    with ConnectHandler(**device) as sw:
+    try:
+        with ConnectHandler(**device) as sw:
         #        sw.enable()
-        out = sw.send_command(command)
-    return out
+            print(f"Connect to {device['host']}")
+            out = sw.send_command(command)
+        return out
+    except netmiko.ssh_exception.NetmikoAuthenticationException:
+        print(f"Ошибка аутентификации на устройстве {device['host']}")
+    except netmiko.ssh_exception.NetmikoTimeoutException:
+        print(f"не удалось подключится к устройству {device['host']}")
+
 
 if __name__ == "__main__":
     #    print(show_ip_int(device))
