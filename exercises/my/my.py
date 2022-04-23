@@ -177,7 +177,7 @@ def counter(output_dict):
 
 if __name__ == "__main__":
     #    print(show_ip_int(device))
-    with open("devices_my.yaml") as f:
+    with open("../CDP/devices_my.yaml") as f:
         devices = yaml.safe_load(f)
     # print(argv[1])
     if len(argv) > 1:
