@@ -15,6 +15,16 @@ Outbound Interface    FastEthernet0/0
 
 """
 
+with open("ospf.txt") as f:
+    for line in f:
+        print("{:<22} {}".format("Prefix", line.split()[1]))
+        print("{:<22} {}".format("AD/Metric", line.split()[2].rstrip("]").lstrip("[")))
+        print("{:<22} {}".format("Next-Hop", line.split()[4].rstrip(",")))
+        print("{:<22} {}".format("Last update", line.split()[5].rstrip(",")))
+        print("{:<22} {}".format("Outbound Interface", line.split()[6]))
+
+
+"""
 result = []
 with open("ospf.txt") as f:
     for lines in f:
@@ -25,3 +35,4 @@ with open("ospf.txt") as f:
               "Last update", " "*15, result[5][:-1], "\n"
               "Outbound Interface", " "*8, result[6]
              )
+"""

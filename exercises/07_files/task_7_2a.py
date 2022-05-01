@@ -15,7 +15,25 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from sys import argv
+ignore = ["duplex", "alias", "configuration"]
 
+
+#with open(argv[1]) as f:
+with open("config_sw1.txt") as f:
+    for line in f:
+        good_line = False
+        for word in ignore:
+            if word in line:
+                good_line = True
+                break
+        if "!" not in line:
+            if good_line == False:
+                print(line.rstrip())
+
+
+
+"""
 from sys import argv
 config_file = argv[1]
 ignore = ["duplex", "alias", "configuration"]
@@ -32,3 +50,4 @@ with open(config_file) as f:
                     break
             if result == False:
                 print(line)
+"""

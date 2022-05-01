@@ -40,3 +40,20 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+#from pprint import pprint
+with open("CAM_table.txt") as f:
+    #res_list = f.readlines()
+    res_list = [[int(line.strip().split()[0]), line.strip().split()[1], line.strip().split()[3]]
+                 for line in f.readlines() if line.strip() if line.strip().split()[0].isdigit()]
+    #for line in f:
+    #    #line_list = []
+    #    line = line.strip()
+    #    if line:
+    #        #res_list = []
+    #        if line.split()[0].isdigit():
+    #            #line_list = [int(line.split()[0]), line.split()[1], line.split()[3]]
+    #            res_list.append([int(line.split()[0]), line.split()[1], line.split()[3]])
+    #pprint(ress_list)
+    res_list = sorted(res_list)
+    for line in res_list:
+        print("{:<10} {:<20} {:<5}".format(line[0], line[1], line[2]))
