@@ -1,0 +1,7 @@
+Value intf (;;; \S+ \S+ \S+ \S+|\S+)
+Value status ( R | X | RS|  S|   )
+#Value vpn_status (;;; \S+ \S+ \S+ \S+)
+
+Start
+  ^( |\d)\d ${status} ${intf} -> Record
+

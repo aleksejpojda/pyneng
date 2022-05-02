@@ -1,0 +1,5 @@
+Value ip (\S+)
+Value intf (\S+)
+
+Start
+  ^( \d \S | +| \d +)${ip}/\S+ +\S+ +${intf} -> Record
