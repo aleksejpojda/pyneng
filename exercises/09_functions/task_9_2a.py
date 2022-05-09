@@ -45,7 +45,7 @@ def generate_trunk_config(intf_vlan_mapping, trunk_template):
             if "allowed vlan" in line:
                 res_list.append(f"{line} {str(vlan[:])[1:-1].replace(' ', '')}")
             else: res_list.append(line)
-        res[f"Interface {intf}"] = res_list
+        res[intf] = res_list
     return res
 
 
