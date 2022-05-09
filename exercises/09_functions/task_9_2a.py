@@ -34,6 +34,21 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from pprint import pprint
+
+
+def generate_trunk_config(intf_vlan_mapping, trunk_template):
+    res = {}
+    for intf,vlan in intf_vlan_mapping.items():
+        res_list = []
+        for line in trunk_template:
+            if "allowed vlan" in line:
+                res_list.append(f"{line} {str(vlan[:])[1:-1].replace(' ', '')}")
+            else: res_list.append(line)
+        res[f"Interface {intf}"] = res_list
+    return res
+
+
 
 
 trunk_mode_template = [
@@ -48,14 +63,9 @@ trunk_config = {
     "FastEthernet0/4": [17],
 }
 
-def generate_trunk_config(intf_vlan_mapping, trunk_template):
-    cfg = []
+def generate_trunk_config_1(intf_vlan_mapping, trunk_template):
     config = {}
-    intf = ""
-    vlans = ""
-    string = ""
     for intf, vlans in intf_vlan_mapping.items():
-        #cfg.append("interface "+intf)
         cfg = []
         for  string in trunk_template:
             if string.endswith("vlan"):
@@ -66,6 +76,4 @@ def generate_trunk_config(intf_vlan_mapping, trunk_template):
         config[intf] = cfg
     return config
 
-print(generate_trunk_config(trunk_config, trunk_mode_template))
-#print("#"*40)
-#print(generate_trunk_config(trunk_config_2, trunk_mode_template))
+pprint(generate_trunk_config(trunk_config, trunk_mode_template))

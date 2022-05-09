@@ -27,6 +27,8 @@ print(generate_access_config(access_config, access_mode_template, port_security_
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from pprint import pprint
+
 
 access_mode_template = [
     "switchport mode access",
@@ -44,8 +46,24 @@ port_security_template = [
 
 access_config = {"FastEthernet0/12": 10, "FastEthernet0/14": 11, "FastEthernet0/16": 17}
 
-
 def generate_access_config(intf_vlan_mapping, access_template, psecurity=None):
+    res = []
+    for intf,vlan in intf_vlan_mapping.items():
+        res.append(f"Interface {intf}")
+        for line in access_template:
+            if "vlan" in line:
+                res.append(f"{line} {vlan}")
+            else: res.append(line)
+        if psecurity:
+            for line in port_security_template:
+                res.append(line)
+    return res
+
+
+
+
+
+def generate_access_config_1(intf_vlan_mapping, access_template, psecurity=None):
     """
     intf_vlan_mapping - словарь с соответствием интерфейс-VLAN такого вида:
     {'FastEthernet0/12':10,
@@ -72,10 +90,10 @@ def generate_access_config(intf_vlan_mapping, access_template, psecurity=None):
 
 
 list_ports_vlans = generate_access_config(access_config, access_mode_template)
-print(list_ports_vlans)
+pprint(list_ports_vlans)
 print("#"*50)
 
 list_ports_vlans = generate_access_config(access_config, access_mode_template, port_security_template)
-print(list_ports_vlans)
+pprint(list_ports_vlans)
 print("#"*50)
 

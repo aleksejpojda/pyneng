@@ -70,7 +70,37 @@ def ignore_command(command, ignore):
 command_up = ""
 command_down = []
 command = {}
+
 def convert_config_to_dict(config_filename):
+    with open(config_filename) as f:
+        file = f.read()
+        out_dict = {}
+        out_dict_line = ""
+        for line in file.split("\n"):
+            if line:
+                if ignore_command(line, ignore) or "!" in line:
+                    pass
+                else:
+                    if line.startswith(" ") == False:
+                        out_list = []
+                        out_dict[line] = []
+                        out_dict_line = line
+                    else:
+                        out_list.append(line)
+                        out_dict[out_dict_line] = out_list
+    return out_dict
+
+
+
+
+
+
+
+
+
+
+
+def convert_config_to_dict_1(config_filename):
     with open(config_filename) as f:
         output = f.read()
         cfg_section = output.replace(" "*9, "").split("!\n")
@@ -96,4 +126,5 @@ def convert_config_to_dict(config_filename):
         del command['']
         return command
 
-#pprint(convert_config_to_dict("config_sw1.txt"))
+pprint(convert_config_to_dict_1("config_sw1.txt"))
+pprint(convert_config_to_dict("config_sw1.txt"))

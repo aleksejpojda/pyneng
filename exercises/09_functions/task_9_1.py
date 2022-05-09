@@ -47,6 +47,8 @@ access_config_2 и убедиться, что в итоговом списке �
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from pprint import pprint
+
 
 access_mode_template = [
     "switchport mode access",
@@ -64,8 +66,22 @@ access_config_2 = {
     "FastEthernet0/09": 107,
 }
 
-
 def generate_access_config(intf_vlan_mapping, access_template):
+    res = []
+    for intf,vlan in intf_vlan_mapping.items():
+        res.append(f"Interface {intf}")
+        for line in access_template:
+            if "vlan" in line:
+                res.append(f"{line} {vlan}")
+            else: res.append(line)
+    return res
+
+
+
+
+
+
+def generate_access_config_new(intf_vlan_mapping, access_template):
     """
     intf_vlan_mapping - словарь с соответствием интерфейс-VLAN такого вида:
         {'FastEthernet0/12':10,
@@ -90,5 +106,5 @@ def generate_access_config(intf_vlan_mapping, access_template):
 
 
 list_ports_vlans = generate_access_config(access_config, access_mode_template)
-print(list_ports_vlans)
+pprint(list_ports_vlans)
 

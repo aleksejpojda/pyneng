@@ -24,8 +24,30 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
 from sys import argv
+from pprint import pprint
+
 
 def get_int_vlan_map(config_filename):
+    res_access = {}
+    res_trunk = {}
+    with open(config_filename) as f:
+        file = f.read()
+        intf = ""
+        for line in file.split("\n"):
+            if "interface" in line:
+                intf = line.split()[-1]
+            elif "access vlan" in line:
+                res_access[intf] = int(line.split()[-1])
+            elif "allowed" in line:
+                res_trunk[intf] = [int(vl) for vl in line.split()[-1].split(",")]
+    return res_access, res_trunk
+
+
+
+
+
+
+def get_int_vlan_map_1(config_filename):
 
     output = ""
     cfg_section = ""
@@ -64,4 +86,6 @@ def get_int_vlan_map(config_filename):
         return access_ports, trunk_ports
 
 
-#print(get_int_vlan_map(argv[1]))
+if __name__ == "__main__":
+    pprint(get_int_vlan_map("config_sw1.txt"))
+    pprint(get_int_vlan_map_1("config_sw1.txt"))
