@@ -86,7 +86,7 @@ def convert_config_to_dict(config_filename):
                         out_dict[line] = []
                         out_dict_line = line
                     else:
-                        out_list.append(line)
+                        out_list.append(line.lstrip())
                         out_dict[out_dict_line] = out_list
     return out_dict
 
