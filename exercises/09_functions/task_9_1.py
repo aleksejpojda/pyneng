@@ -69,7 +69,7 @@ access_config_2 = {
 def generate_access_config(intf_vlan_mapping, access_template):
     res = []
     for intf,vlan in intf_vlan_mapping.items():
-        res.append(f"Interface {intf}")
+        res.append(f"interface {intf}")
         for line in access_template:
             if "vlan" in line:
                 res.append(f"{line} {vlan}")
