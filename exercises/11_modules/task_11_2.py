@@ -42,7 +42,7 @@ infiles = [
 
 def create_network_map(filenames):
     result = {}
-    output = ""
+    #output = ""
     for files in filenames:
         with open(files) as f:
             result.update(parse_cdp_neighbors(f.read()).items())
