@@ -4,6 +4,7 @@ import logging
 from urllib.parse import urljoin
 import csv
 from pprint import pprint
+import Telegram_send
 
 
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +24,7 @@ FILE_NAME = input(
     )
 if not FILE_NAME:
     FILE_NAME = "out.csv"
-#URL = "https://www.columbia.com/c/womens-jackets/?all=true"
+URL = "https://www.columbia.com/c/womens-jackets/?all=True"
 HEADERS = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
             "Accept-Language": "ru", "accept": "*/*"
@@ -38,9 +39,6 @@ def get_html(url, params=None):
 def get_content(html):
     """парсим загруженную страницу"""
     soup = BeautifulSoup(html, "html.parser")
-    #pages = soup.find("div", class_="show-more")
-    #page_all_url = pages.find("a", class_="show-all-button").get("href")
-    #print(page_all_url)
     items = soup.find_all("div", class_="product-tile__wrapper")
     goods = []
     for item in items:
@@ -71,7 +69,7 @@ def parse():
     if html.status_code == 200:
         out_list = get_content(html.text)
     else:
-        logger.error(f"Страница {URL} не скачана")
+        logger.error(f"Не удалось загрузить страницу {URL}")
         return
     return out_list
 
@@ -87,4 +85,6 @@ def write_file(file_name, out_list):
 
 
 if __name__ == '__main__':
-    write_file(FILE_NAME, parse())
+    result = parse()
+    write_file(FILE_NAME, result)
+    Telegram_send.generate_text(result)

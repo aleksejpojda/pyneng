@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import logging
 from urllib.parse import urljoin
 import csv
+import Telegram_send
 from pprint import pprint
 
 
@@ -103,4 +104,6 @@ def write_file(file_name, out_list):
 
 
 if __name__ == '__main__':
-    write_file(FILE_NAME, parse())
+    result = parse()
+    write_file(FILE_NAME, result)
+    Telegram_send.generate_text(result)
