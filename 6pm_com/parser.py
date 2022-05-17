@@ -83,13 +83,12 @@ def parse():
                 print(f"Парсинг страницы {page} из {page_count} страниц...")
                 html = get_html(URL, params={"p": page})
                 goods.extend(get_content(html.text))
-            print("Получено результатов:", len(goods))
         else:
-            print("Получено результатов:", len(goods))
             return goods
     else:
         logger.error(f"Не удалось загрузить страницу {URL}")
         return
+    print("Получено результатов:", len(goods))
     return goods
 
 
@@ -100,10 +99,10 @@ def write_file(file_name, out_list):
         for line in out_list:
             writer.writerow(
                 [line["title"], line["price"], line["price_msrp"], line["link"], line["img"]]
-            )
+                            )
 
 
 if __name__ == '__main__':
     result = parse()
     write_file(FILE_NAME, result)
-    Telegram_send.generate_text(result)
+    #Telegram_send.generate_text(result)

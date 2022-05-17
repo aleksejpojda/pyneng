@@ -87,4 +87,4 @@ def write_file(file_name, out_list):
 if __name__ == '__main__':
     result = parse()
     write_file(FILE_NAME, result)
-    Telegram_send.generate_text(result)
+    #Telegram_send.generate_text(result)
