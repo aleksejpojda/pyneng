@@ -4,8 +4,14 @@ import logging
 import csv
 from collections import namedtuple
 from pprint import pprint
+import logging
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("site")
 
 InnerBlock = namedtuple('Block', 'title, price_usd, price_uah, date, url')
+url = "https://auto.ria.com/uk/legkovie/audi/80/"
 
 class Block(InnerBlock):
 
@@ -20,53 +26,99 @@ class Ria_parcer:
             "Accept-Language": "ru"
         }
 
-    def get_page(self, page: int=None):
-        params = {
-            'size': 10,
-            'user': 1,
-        }
-        if page and page > 1:
-            params['p'] = page
-        url = "https://auto.ria.com/uk/legkovie/bmw/x5/"
-        r = self.session.get(url, params=params)
-        return r.text
+    def get_page(self, pages: int=None):
+        params = {}
+        list_cars = []
+        if pages and pages > 1:
+            html = (self.session.get(url)).text
+            list_cars.append(self.get_blocks(html))
+            for page in range(1, pages):
+                print(f"Загрузка страницы {page} из {pages}...")
+                html = (self.session.get(url, params={"page": page})).text
+                list_cars.extend(self.get_blocks(html))
+        else:
+            html = self.session.get(url)
+            list_cars.append(self.get_blocks(html))
+        return list_cars
+        #return html
 
-    def get_blocks(self):
-        text = self.get_page(page=2)
-        soup = bs4.BeautifulSoup(text, 'lxml')
+    def get_blocks(self, html):
+        out_list = []
+        #text = self.get_page(pages=pages)
+        soup = bs4.BeautifulSoup(html, 'lxml')
         container = soup.select("div.content-bar")
         for item in container:
             #pprint(item)
             block = self.parce_block(item=item)
-            #print(block)
+            out_list.append(block)
+            #print(out_list)
+        return out_list
+
+    def write_file(self, out_list):
+        #print(out_list)
+        with open("out_list.csv", "w", newline='') as f:
+            writer = csv.writer(f, delimiter=";")
+            writer.writerow(["Заголовок", "Валюта", "Цена", "Дата публикации", "Ссылка"])
+            for line in out_list:
+                writer.writerow(
+                    [line["title"], line["currency"], line["price_usd"], line["date"], line["url"]]
+                )
 
     def parce_block(self, item):
         url_block = item.select_one('a.m-link-ticket')
-        href = url_block.get('href') # ссылка
-        #if href:
-        #    print(href) # = 'https://auto.ria.com' + href
-        #else:
-        #    herf = None
+        href = url_block.get('href').strip() # ссылка
 
         t_block = item.select_one("div.item.ticket-title")
-        title_block = t_block.select_one('a.address')
-        title = title_block.get('title') # заголовок объявления
+        title = t_block.find('a', class_='address').text
+        #print(title_block)
+        #title = title_block.get('title') # заголовок объявления
+        #print(title)
+        #print(href)
 
         val = item.select_one('div.price-ticket')
-        #print(val.text)
-        price_usd = val.text.split("$")[0]
-        price_uah = val.text.split("$")[1][3:]
-        print(price_uah)
-        #valuta = item.select_one("span.bold.green.size22")
-        #price = item.select_one("span.bold.green.size22")
-        #price = price.text + "$"
-        #print(price, title, href)
+        currency = val.get("data-main-currency")
+        price_usd = val.get("data-main-price")
+        #print(price_usd, currency)
 
+        date_block = item.select_one("div.footer_ticket")
+        if not date_block:
+            logging.error(f"Не найден date_block в {href}")
+            return
+        else:
+            date_info = date_block.text.strip()
+            #print(date_info)
+
+        result = {
+            "title": title,
+            "currency": currency,
+            "price_usd": price_usd,
+            "date": date_info,
+            "url": href
+        }
+        return result
+
+
+    def get_pages_count(self):
+        html = self.session.get(url)
+        #print(html.text)
+        #html = self.get_page()
+        soup = bs4.BeautifulSoup(html.text, "html.parser")
+        page = soup.find_all("span", class_="page-item mhide")
+        if page:
+            self.pages = int(page[-1].text.strip())
+            return self.pages
+        else:
+            return 1
 
 
 def main():
     p = Ria_parcer()
-    p.get_blocks()
+    #pages = p.get_pages_count()
+    #print(pages)
+    d = p.get_page(2)
+    #print(d)
+    p.write_file(d)
+    #print(pages)
 
 if __name__ == '__main__':
     main()
