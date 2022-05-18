@@ -16,15 +16,17 @@ bot = Bot(
         token = token,
     )
 
-def generate_text(out_list):
+def generate_text(out_list, message):
     for line in out_list:
         title = line["title"]
         price = line["price"]
         url = line["link"]
         img = line['img']
-        text = f"<b>{title}</b>\n\n{price}\n\n<a href='{img}' >{url} </a>"
+        print(img)
+        text = f'<b>{title}</b>\n\n{price}\n\n<a href="{img}"> </a>{url}\n\n{message}'
         send_data(bot, text)
         time.sleep(3) # если слать чаще - банят
+        print(f"Отправлено сообщений {out_list.index(line)+1} из {len(out_list)}...")
 
 def send_data(bot: Bot, text):
     bot.send_message(chatId, text, parse_mode="HTML")

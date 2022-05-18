@@ -11,12 +11,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("site")
 
 
-URL = ""
-while not URL:
-    URL = input(
-        "Введита адресы ссылки нужного раздела. Для этого перейдите в нужный раздел\n"
-        "и вставьте результат, скопированый с адресной строки браузера:"
-        )
+#URL = ""
+#while not URL:
+#    URL = input(
+#        "Введита адресы ссылки нужного раздела. Для этого перейдите в нужный раздел\n"
+#        "и вставьте результат, скопированый с адресной строки браузера:"
+#        )
 
 FILE_NAME = input(
     "Введите имя файла для сохранения результата.\n"
@@ -24,7 +24,7 @@ FILE_NAME = input(
     "По умолчанию файл будет называться out.csv:"
     )
 
-#URL = "https://www.6pm.com/women-clothing/CKvXAcABAeICAgEY.zso?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/"
+URL = "https://www.6pm.com/women-clothing/CKvXAcABAeICAgEY.zso?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/"
 if not FILE_NAME:
     FILE_NAME = "out.csv"
 
@@ -41,7 +41,8 @@ def get_html(url, params=None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, "html.parser")
-    pagination_block = soup.find("span", class_="Lr-z")
+    pagination_block = soup.find("span", class_="Tu-z")
+    #print(pagination_block)
     pagination = pagination_block.find_all("a", class_=None)[-1].get_text()
     if pagination:
         return int(pagination)
@@ -51,19 +52,19 @@ def get_pages_count(html):
 def get_content(html):
     """парсим загруженную страницу"""
     soup = BeautifulSoup(html, "html.parser")
-    items = soup.find_all("article", class_="yl-z")
+    items = soup.find_all("article", class_="kk-z")
 
     goods = []
     for item in items:
-        text = item.find("a", class_="Ej-z").get_text()
+        text = item.find("a", class_="_i-z").get_text()
         title = text.split(" On sale for ")[0]
-        if item.find("dd", class_="Ql-z"):
-            msrp = item.find("dd", class_="Ql-z").text.split(":")[0][0:-4]
+        if item.find("dd", class_="tk-z"):
+            msrp = item.find("dd", class_="tk-z").text.split(":")[0][0:-4]
         else: msrp = "no MSRP price"
         goods.append({
-            "link": urljoin(URL, (item.find("a", class_="Ej-z").get("href"))),
+            "link": urljoin(URL, (item.find("a", class_="_i-z").get("href"))),
             "title": title,
-            "price": item.find("span", class_="Pl-z").get_text(),
+            "price": item.find("span", class_="tk-z").get_text(),
             "price_msrp": msrp,
             "img": item.find("meta", class_=None).get("content")
         })
@@ -77,7 +78,7 @@ def parse():
         goods = []
         page_count = get_pages_count(html.text)
         goods.extend(get_content(html.text))
-        #page_count = 0  #для отладки, загружать только 1 страницу
+        page_count = 0  #для отладки, загружать только 1 страницу
         if page_count > 1:
             for page in range(1, page_count + 1):
                 print(f"Парсинг страницы {page} из {page_count} страниц...")
@@ -103,6 +104,8 @@ def write_file(file_name, out_list):
 
 
 if __name__ == '__main__':
+    message = "Какое-то сообщение для людей"
     result = parse()
+    pprint(result)
     write_file(FILE_NAME, result)
-    #Telegram_send.generate_text(result)
+    Telegram_send.generate_text(result, message)
