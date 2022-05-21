@@ -1,1 +1,1 @@
-from Columbia_com.parser import parse
+from Columbia_com import parser_Columbia

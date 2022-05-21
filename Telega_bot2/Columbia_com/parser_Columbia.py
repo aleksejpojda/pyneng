@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import logging
 from urllib.parse import urljoin
 import csv
-from datetime import date
+from datetime import date, time
 from pprint import pprint
 #import Telegram_send
 
@@ -18,14 +18,14 @@ logger = logging.getLogger("site")
 #        "Для этого перейдите на нужную страницу, нажмите 'Show all' внизу страницы\n"
 #        "и вставьте результат, скопированый с адресной строки браузера:"
 #        )
-FILE_NAME = ''#input(
+FILE_NAME = '' #input(
 #    "Введите имя файла для сохранения результата.\n"
 #    "Файл должен иметь расширение CSV и будет сохранен в текущем каталоге\n"
 #    "По умолчанию файл будет называться out.csv:"
 #    )
 if not FILE_NAME:
-    FILE_NAME = f"out{date.today()}.csv"
-URL = "https://www.columbia.com/c/womens-jackets/?all=True"
+    FILE_NAME = f"Columbia{date.today()}.csv"
+URL = "https://www.columbia.com/c/womens-jackets/"
 HEADERS = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
             "Accept-Language": "ru", "accept": "*/*"
@@ -73,7 +73,7 @@ def parse():
     else:
         logger.error(f"Не удалось загрузить страницу {URL}")
         return
-    return out_list
+    #return out_list
 
 
 def write_file(file_name, out_list):
