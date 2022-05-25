@@ -1,9 +1,10 @@
 from aiogram import types, Dispatcher
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton
-from create_bot import dp, bot, chatid
+from create_bot import dp, bot, path
+from handlers.admin import chatid
 from keyboards.client_keyboard import kb_clients_settings, kb_clients, kb_upload
 from Columbia_com import parser_Columbia
-import time, yaml, csv
+import time, yaml, csv, os
 from files import remove_old_files, list_dir_sites
 
 
@@ -27,7 +28,15 @@ async def command_anonse_file(message: types.Message):
             if line['old_price']:
                 old_price = line['old_price']
             else: old_price = None
-            text = f"<b>{line['title']}</b>\n\n{line['price']}\t\t\t\t\t\t<s>{old_price}</s>\n\n<a href='{line['img']}' ></a> {line['link']}\n"
+            files = [f for f in os.listdir(path) if os.path.isfile(f)]
+            if 'settings.yaml' in files:
+                with open('settings.yaml', 'r') as f:
+                    settings = yaml.safe_load(f)
+                    for row in settings:
+                        if row['my_description']:
+                            my_description = row['my_description']
+                        else: my_description=None
+            text = f"<b>{line['title']}</b>\n\n{line['price']}\t\t\t\t\t\t<s>{old_price}</s>\n\n<a href='{line['img']}' ></a> {line['link']}\n\n{my_description}\n"
             await bot.send_message(chat_id=chatid, text=text, parse_mode="html")
             time.sleep(3)
 

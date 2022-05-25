@@ -4,6 +4,10 @@ from handlers import client, admin, other, anonse
 from database import sqlite_db
 from files import remove_old_files
 
+
+
+
+
 """
 Основной файл для запуска
 """
