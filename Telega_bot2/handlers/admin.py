@@ -15,12 +15,10 @@ files = [f for f in os.listdir(path) if os.path.isfile(f)]
 if 'settings.yaml' in files:
     with open('settings.yaml', 'r') as f:
         settings = yaml.safe_load(f)
-        print(settings)
+        print('Считываем настройки...')
         if 'chatid' in settings:
-            for line in settings:
-                if line["chatid"]:
-                    chatid=line['chatid']
-                    print(f'нашли chatid {chatid}')
+            chatid=settings['chatid']
+            print(f'нашли chatid {chatid}')
         else: chatid = "@my_test_chanal_1"
 else: chatid = "@my_test_chanal_1"
 
@@ -129,7 +127,7 @@ async def my_description(message: types.Message):
 
 
 async def save_msg_setting(message: types.Message, state: FSMContext):
-"""Получаем сообщение с текстом настроек подписи"""
+    """Получаем сообщение с текстом настроек подписи"""
     async with state.proxy() as data:
         await write_setting(message.text, "my_description")
     await state.finish()
