@@ -2,7 +2,7 @@ from aiogram.utils import executor
 from create_bot import dp
 from handlers import client, admin, other, anonse
 from database import sqlite_db
-from files import list_dir_sites
+from files import remove_old_files
 
 """
 Основной файл для запуска
@@ -14,7 +14,7 @@ async def on_startup(_):
     добавить в executor параметр on_startup=on_startup"""
     print("Бот подключился")
     sqlite_db.sql_start() #подключимся или создадим базу данных
-    list_dir_sites()
+    remove_old_files()
 
 admin.register_handlers_new_message(dp)
 anonse.register_handler_anonse(dp)

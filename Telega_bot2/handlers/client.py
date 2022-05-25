@@ -6,7 +6,7 @@ from keyboards import kb_clients_settings, kb_clients
 #import time
 
 
-#@dp.message_handler(commands=["start", "help"])
+#@dp.message_handler(commands=["start", "help", "Меню"])
 async def commads_start(message: types.Message):
     try:
         #await message.answer(message.text)  # тупо отсылает текст
@@ -25,7 +25,7 @@ async def command_settings(message: types.Message):
 
 
 def register_handler_clients(dp: Dispatcher):
-    dp.register_message_handler(commads_start, commands=["start", "help"]) #Можно писать такие функции вместо декораторов
+    dp.register_message_handler(commads_start, commands=["start", "help", "Меню"]) #Можно писать такие функции вместо декораторов
     #для каждого декоратора дополнительная строка в функции
     dp.register_message_handler(command_settings, commands=["Настройки"])
 

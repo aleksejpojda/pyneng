@@ -3,7 +3,7 @@ from datetime import date
 
 def sql_start():
     global base, cur
-    base = sq.connect(f"anonce{date.today()}.db")
+    base = sq.connect("anonce.db")
     cur = base.cursor()
     if base:
         print("Base connected")

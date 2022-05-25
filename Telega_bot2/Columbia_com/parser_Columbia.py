@@ -79,7 +79,7 @@ def parse():
 def write_file(file_name, out_list):
     with open(file_name, "w", newline='') as f:
         writer = csv.writer(f, delimiter=";")
-        writer.writerow(["Название товара", "Цена", "Цена без скидки", "Ссылка", "Ссылка на изображение"])
+        writer.writerow(["title", "price", "old_price", "link", "img"])
         for line in out_list:
             writer.writerow(
                 [line["title"], line["price"], line["old_price"], line["link"], line["img"]]

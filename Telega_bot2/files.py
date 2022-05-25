@@ -10,7 +10,7 @@ def list_dir_sites():
 
 
 
-def remove_old_files():
+def remove_old_files(remove=False):
     """Удаляет файлы старше трех дней
     Возвращает список файлов"""
     result = {}
@@ -20,18 +20,19 @@ def remove_old_files():
         #print(site, site_dir)
         files = [ f for f in os.listdir(path) if os.path.isfile(f) if f.startswith(site)]
         #print(files)
-        for file in files:
-            date_in_name = date.fromisoformat(file.split(site)[-1].split('.')[0])
-            delta = timedelta(days=2)
-            if date_in_name + delta < date.today():
-                print(f'старый файл {file}, удаляем')
-                os.remove(file)
+        if remove:
+            for file in files:
+                date_in_name = date.fromisoformat(file.split(site)[-1].split('.')[0])
+                delta = timedelta(days=2)
+                if date_in_name + delta < date.today():
+                    print(f'старый файл {file}, удаляем')
+                    os.remove(file)
         result['/'+site_dir] = [ '/'+f for f in os.listdir(path) if os.path.isfile(f) if f.startswith(site)]
     #print(result)
     with open('file_list.yaml', 'w') as f:
         yaml.dump(result, f, default_flow_style=False)
 
-    #return result
+    return result
 
 
 #print(list_dir_sites())
