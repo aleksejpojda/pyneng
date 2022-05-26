@@ -57,7 +57,7 @@ class FSMSettingsChatID(StatesGroup):
 async def cm_start(message : types.Message):
     #if message.from_user.id == ID:
     await FSMNewPost.photo.set()
-    await message.reply("Загрузи фото")
+    await bot.send_message(message.from_user.id, text="Загрузи фото")
 
 #Ловим фото и пишем в словарь, просим заголовок
 #@dp.message_handler(content_types=['photo'], state=FSMNewPost.photo)
@@ -97,11 +97,10 @@ async def load_link(message: types.Message, state: FSMContext):
         if 'settings.yaml' in files:
             with open('settings.yaml', 'r') as f:
                 settings = yaml.safe_load(f)
-                for line in settings:
-                    if line['my_description']:
-                        my_description = line['my_description']
-                    else:
-                        my_description = None
+                if settings['my_description']:
+                    my_description = settings['my_description']
+                else:
+                    my_description = None
         #await message.reply(text, parse_mode='html')
         await bot.send_photo(chatid, data['photo'], f"{data['description']}\nЦена: ${data['price']}\n{data['link']}\n\n{my_description}\n")
         await sqlite_db.sql_add_command(state)
@@ -119,10 +118,10 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('Ввод отменен')
 
 #@dp.message_handler(commands=['Моя_подпись'])
-async def my_description(message: types.Message):
+async def my_description(message: types.CallbackQuery):
     """Просим настройки подписи"""
     await FSMSettings.my_description.set()
-    await message.reply('Введите подпись, будет отображаться в каждом сообщении')
+    await bot.send_message(message.from_user.id, text='Введите подпись, будет отображаться в каждом сообщении')
 
 
 
@@ -136,7 +135,7 @@ async def save_msg_setting(message: types.Message, state: FSMContext):
 async def my_chatid(message: types.Message):
     """Просим настройки имени канала"""
     await FSMSettingsChatID.chatid.set()
-    await message.reply('Введите имя канала, в котором бот будет постить сообщения')
+    await bot.send_message(message.from_user.id, text='Введите имя канала, в котором бот будет постить сообщения')
 
 async def save_chatid_setting(message: types.Message, state: FSMContext):
     """Получаем мия канала"""
@@ -159,16 +158,16 @@ async def write_setting(message, name_setting):
 
 
 def register_handlers_new_message(dp : Dispatcher):
-    dp.register_message_handler(cm_start, commands=["Пост"], state=None)
+    dp.register_callback_query_handler(cm_start, text=["Пост"], state=None)
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMNewPost.photo)
-    dp.register_message_handler(cancel_handler, state="*", commands=["отмена"])
+    dp.register_message_handler(cancel_handler, state="*", text=["отмена"])
     dp.register_message_handler(cancel_handler, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(load_description, state=FSMNewPost.description)
     dp.register_message_handler(load_price, state=FSMNewPost.price)
     dp.register_message_handler(load_link, state=FSMNewPost.link)
-    dp.register_message_handler(my_description, commands=['Моя_подпись'])
+    dp.register_callback_query_handler(my_description, text=['Моя_подпись'])
     dp.register_message_handler(save_msg_setting, state=FSMSettings.my_description)
-    dp.register_message_handler(my_chatid, commands=['Имя_канала_или_чата'])
+    dp.register_callback_query_handler(my_chatid, text=['Имя_канала_или_чата'])
     dp.register_message_handler(save_chatid_setting, state=FSMSettingsChatID.chatid)
 #    dp.register_message_handler(admin_rules, commands=['admin'], is_chat_admin=True)
 #    dp.register_message_handler(chanel_name, commands=['Имя канала или чата'])
