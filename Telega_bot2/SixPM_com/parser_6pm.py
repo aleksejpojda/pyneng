@@ -7,7 +7,7 @@ from pprint import pprint
 from datetime import date
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("site")
 
 
@@ -26,7 +26,7 @@ FILE_NAME = ''#input(
 
 URL = "https://www.6pm.com/women-clothing/CKvXAcABAeICAgEY.zso?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/"
 if not FILE_NAME:
-    FILE_NAME = f"6pm{date.today()}.csv"
+    FILE_NAME = f"SixPM{date.today()}.csv"
 
 HEADERS = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
@@ -63,13 +63,13 @@ def get_content(html):
                 old_price = item.get_text().split("On sale for")[1].split('MSRP')[1].strip().split('..')[0]
             else:
                 title = item.get_text().split('$')[0]
-                price = "$" + item.get_text().split('$')[1]
+                price = "$" + item.get_text().split('$')[1].split('. ')[0]
                 old_price = ''
             goods.append({
                 'title': title,
                 'price': price,
                 'old_price': old_price,
-                'link': urljoin(URL, item.get("href")),
+                'link': urljoin(URL, item.find('a').get("href")),
                 'img': item.find('meta', class_=None).get("content")
             })
     return goods
@@ -89,16 +89,17 @@ def parse():
                 html = get_html(URL, params={"p": page})
                 goods.extend(get_content(html.text))
         else:
-            return goods
+            write_file(FILE_NAME, goods)
     else:
         logger.error(f"Не удалось загрузить страницу {URL}")
         return
     print("Получено результатов:", len(goods))
+    write_file(FILE_NAME, goods)
     return goods
 
 
 def write_file(file_name, out_list):
-    with open(file_name, "w", newline='', encoding='utf-8') as f:
+    with open(file_name, "w", newline='') as f:
         writer = csv.writer(f, delimiter=";")
         writer.writerow(["title", "price", "old_price", "link", "img"])
         for line in out_list:

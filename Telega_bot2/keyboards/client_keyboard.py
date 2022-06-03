@@ -21,15 +21,21 @@ b_s8 = InlineKeyboardButton("Выгрузка", callback_data='Выгрузка'
 
 kb_clients_settings = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_clients_settings.add(b_s1).insert(b_s2).add(b_s3).insert(b_s4).add(b_s5).insert(b_s6)\
-    .add(b_s7).insert(b_s8).add(InlineKeyboardButton('Меню', callback_data='Меню'))
+    .add(b_s7).insert(b_s8).add(InlineKeyboardButton('Меню', one_time_keyboard=True, callback_data='Меню'))
 
 with open('file_list.yaml') as f:
     list_file = yaml.safe_load(f)
     list_kb_vlaue = []
 for line in list_file.values():
     list_kb_vlaue.extend(line)
+
 button_list = [InlineKeyboardButton(text=line.lstrip('/'), callback_data=line.lstrip('/')) for line in list_file.keys()]
 
 
-kb_upload = InlineKeyboardMarkup(resize_keyboard=True, row_width=2)\
+
+kb_upload = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True, row_width=2)\
     .row(*button_list).add(InlineKeyboardButton('Меню', callback_data='Меню'))
+
+short_long_button = [InlineKeyboardButton(text='Обычная ссылка', callback_data='long'), InlineKeyboardButton(text='Короткая ссылка', callback_data='short')]
+kb_short_long_link = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True, row_width=2)\
+    .row(*short_long_button).add(InlineKeyboardButton(text='Меню', callback_data='Меню'))

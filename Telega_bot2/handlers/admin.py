@@ -6,7 +6,7 @@ from aiogram import types, Dispatcher
 from create_bot import dp, bot#, chatid
 from database import sqlite_db
 from create_bot import path
-from keyboards import kb_clients_settings
+from keyboards.client_keyboard import kb_clients_settings, kb_short_long_link
 
 
 # Читаем настройки из файла если он есть,
@@ -35,14 +35,6 @@ class FSMSettings(StatesGroup):
 
 class FSMSettingsChatID(StatesGroup):
     chatid = State()
-
-#@dp.message_handler(commands=['Имя канала или чата'])
-#async def chanel_name(message: types.Message, state: FSMContext):
-#    if message.from_user.id == ID:
-#        await bot.send_message(chatid, 'Введите название канала или чата, куда будем постить, бот и вы в нем должны быть администраторами')
-#        async with state.proxy() as data:
-#            data['chanel_name']=message.text
-#        await state.finish()
 
 #Получение ID текущего админа группы (писать только в ту группу где вы админ)
 #@dp.message_handler(commands=['admin'], is_chat_admin=True)
@@ -101,8 +93,11 @@ async def load_link(message: types.Message, state: FSMContext):
                     my_description = settings['my_description']
                 else:
                     my_description = None
+                if settings['chatid']:
+                    chatid = settings['chatid']
         #await message.reply(text, parse_mode='html')
-        await bot.send_photo(chatid, data['photo'], f"{data['description']}\nЦена: ${data['price']}\n{data['link']}\n\n{my_description}\n")
+        await bot.send_photo(chatid, data['photo'], f"{data['description']}\nЦена: ${data['price']}\n"
+                                                    f"{data['link']}\n\n{my_description}\n")
         await sqlite_db.sql_add_command(state)
     await state.finish()
 
@@ -135,7 +130,21 @@ async def save_msg_setting(message: types.Message, state: FSMContext):
 async def my_chatid(message: types.Message):
     """Просим настройки имени канала"""
     await FSMSettingsChatID.chatid.set()
-    await bot.send_message(message.from_user.id, text='Введите имя канала, в котором бот будет постить сообщения')
+    await bot.send_message(message.from_user.id, text='Введите имя канала, в котором бот будет постить сообщения'
+                                                      '\nБот в этом канале должен быть администраторм')
+
+
+async def my_short_link(message: types.CallbackQuery):
+    """Спрашиваем какой тип ссылок принимать"""
+    await message.message.edit_text("Отправляем короткие ссылки или длинные?", reply_markup=kb_short_long_link)
+
+async def my_short_link_set(message: types.CallbackQuery):
+    """Определяем какой тип ссылок выбрали и сохраняем"""
+    await write_setting(message.data, 'short_url')
+    if message.data == 'short':
+        await message.message.answer('Выбран режим отправки коротких ссылок')
+    elif message.data == 'long':
+        await message.message.answer('Выбран режим отправки ссылок, полученых с сайта')
 
 async def save_chatid_setting(message: types.Message, state: FSMContext):
     """Получаем мия канала"""
@@ -166,6 +175,8 @@ def register_handlers_new_message(dp : Dispatcher):
     dp.register_message_handler(load_price, state=FSMNewPost.price)
     dp.register_message_handler(load_link, state=FSMNewPost.link)
     dp.register_callback_query_handler(my_description, text=['Моя_подпись'])
+    dp.register_callback_query_handler(my_short_link, text=['Короткая_ссылка'])
+    dp.register_callback_query_handler(my_short_link_set, text=['short', 'long'])
     dp.register_message_handler(save_msg_setting, state=FSMSettings.my_description)
     dp.register_callback_query_handler(my_chatid, text=['Имя_канала_или_чата'])
     dp.register_message_handler(save_chatid_setting, state=FSMSettingsChatID.chatid)

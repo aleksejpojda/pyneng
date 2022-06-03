@@ -1,9 +1,12 @@
-/6pm_com: []
+/Amazon_com:
+- /Amazon2022-06-02.csv
+- /Amazon2022-06-03.csv
 /Columbia_com:
-- /Columbia2022-05-22.csv
-- /Columbia2022-05-23.csv
-- /Columbia2022-05-24.csv
-- /Columbia2022-05-25.csv
-- /Columbia2022-05-26.csv
+- /Columbia2022-06-02.csv
+- /Columbia2022-06-03.csv
+/SixPM_com:
+- /SixPM2022-06-02.csv
+- /SixPM2022-06-03.csv
 /Zara_com:
-- /Zara2022-05-26.csv
+- /Zara2022-06-02.csv
+- /Zara2022-06-03.csv

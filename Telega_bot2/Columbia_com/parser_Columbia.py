@@ -8,7 +8,7 @@ from pprint import pprint
 #import Telegram_send
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("site")
 
 #URL = ""
@@ -25,7 +25,7 @@ FILE_NAME = '' #input(
 #    )
 if not FILE_NAME:
     FILE_NAME = f"Columbia{date.today()}.csv"
-URL = "https://www.columbia.com/c/new-arrivals/?cgid=new-arrivals"
+URL = "https://www.columbia.com/c/new-arrivals/?cgid=new-arrivals&pagesize=72"
 HEADERS = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
             "Accept-Language": "ru", "accept": "*/*"
@@ -87,7 +87,7 @@ def write_file(file_name, out_list):
 
 
 if __name__ == '__main__':
-    message = "Какое-то сообщение для людей"
-    result = parse()
+    #message = "Какое-то сообщение для людей"
+    parse()
     #write_file(FILE_NAME, result)
     #Telegram_send.generate_text(result, message)

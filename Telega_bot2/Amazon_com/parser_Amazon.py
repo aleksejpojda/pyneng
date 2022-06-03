@@ -7,7 +7,7 @@ from pprint import pprint
 from datetime import date
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("site")
 
 
@@ -24,9 +24,9 @@ FILE_NAME = ''#input(
 #    "По умолчанию файл будет называться out.csv:"
 #    )
 
-URL = "https://www.6pm.com/women-clothing/CKvXAcABAeICAgEY.zso?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/"
+URL = "https://www.amazon.com/s?bbn=16225020011&rh=n%3A7141123011%2Cn%3A16225020011%2Cn%3A1040664%2Cp_n_size_six_browse-vebin%3A4940398011&dc&fst=as%3Aoff&pf_rd_i=16225020011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=2a239f2b-0318-4c5d-be33-9cc1f0eed9b3&pf_rd_r=D6XXPNYAK78V3WF5X6S2&pf_rd_s=merchandised-search-3&pf_rd_t=101&qid=1489098061&rnid=4940396011&ref=s9_acss_bw_cg_AEGFVN2E_1a1_w"
 if not FILE_NAME:
-    FILE_NAME = f"6pm{date.today()}.csv"
+    FILE_NAME = f"Amazon{date.today()}.csv"
 
 HEADERS = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
@@ -53,25 +53,36 @@ def get_pages_count(html):
 def get_content(html):
     """парсим загруженную страницу"""
     soup = BeautifulSoup(html, "html.parser")
-    items = soup.find_all("article")
+    items = soup.find_all("div", class_='a-section')
     goods = []
     for item in items:
-        if item.get("data-style-id"):
-            if 'On sale for' in item.get_text():
-                title = item.get_text().split("On sale for")[0].strip()
-                price = item.get_text().split("On sale for")[1].split('MSRP')[0].strip().strip('.')
-                old_price = item.get_text().split("On sale for")[1].split('MSRP')[1].strip().split('..')[0]
-            else:
-                title = item.get_text().split('$')[0]
-                price = "$" + item.get_text().split('$')[1]
-                old_price = ''
+        #print(item)
+        if item.find('a', class_='a-link-normal') and item.find('span', class_='a-size-base-plus') and item.find('img', class_='s-image'):
+            link = urljoin(URL, item.find('a', class_='a-link-normal').get('href'))
+            #print(link)
+        #elif item.find('img', class_='s-image'):
+            title = item.find('span', class_='a-size-base-plus').get_text()
+            #print(title)
+            img = item.find('img', class_='s-image').get('src')
+            price = 'Цену уточняйте, зависит от размера вещи'
+            old_price = ''
+            #print(img)
+            if item.find('span', class_='a-price'):
+                if item.find('span', class_='a-price').get('data-a-size') == 'l':
+                    price = item.find('span', class_='a-offscreen').get_text()
+                    if item.find('span', class_='a-price').get('data-a-size') == 'b':
+                        old_price = item.find('span', class_='a-offscreen').get_text()
+                        #print('old price ', old_price)
+                    #else: old_price = ''
+
             goods.append({
-                'title': title,
-                'price': price,
-                'old_price': old_price,
-                'link': urljoin(URL, item.get("href")),
-                'img': item.find('meta', class_=None).get("content")
-            })
+                        'title': title,
+                        'price': price,
+                        'old_price': old_price,
+                        'link': link,
+                        'img': img
+                    })
+    #print(goods)
     return goods
 
 
@@ -89,16 +100,17 @@ def parse():
                 html = get_html(URL, params={"p": page})
                 goods.extend(get_content(html.text))
         else:
-            return goods
+            write_file(FILE_NAME, goods)
     else:
         logger.error(f"Не удалось загрузить страницу {URL}")
         return
     print("Получено результатов:", len(goods))
+    write_file(FILE_NAME, goods)
     return goods
 
 
 def write_file(file_name, out_list):
-    with open(file_name, "w", newline='', encoding='utf-8') as f:
+    with open(file_name, "w", newline='') as f:
         writer = csv.writer(f, delimiter=";")
         writer.writerow(["title", "price", "old_price", "link", "img"])
         for line in out_list:

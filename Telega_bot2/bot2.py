@@ -17,8 +17,8 @@ async def on_startup(_):
     """Выполняется при подключении бота
     добавить в executor параметр on_startup=on_startup"""
     print("Бот подключился")
-    sqlite_db.sql_start() #подключимся или создадим базу данных
-    remove_old_files()
+    #sqlite_db.sql_start() #подключимся или создадим базу данных
+    remove_old_files(remove=True)
 
 admin.register_handlers_new_message(dp)
 anonse.register_handler_anonse(dp)
