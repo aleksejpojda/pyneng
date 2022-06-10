@@ -1,0 +1,1034 @@
+Current configuration : 33475 bytes
+!
+! Last configuration change at 10:59:32 EEST Fri May 6 2022 by dn090285gvv1
+! NVRAM config last updated at 11:01:33 EEST Fri May 6 2022 by dn090285gvv1
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec localtime show-timezone year
+service timestamps log datetime msec localtime show-timezone year
+service password-encryption
+!
+hostname 201_135_new_47
+!
+boot-start-marker
+boot-end-marker
+!
+logging count
+logging buffered 1048000
+!
+username nocadmin privilege 15 secret 5 $1$kUmU$A4ATDuKT6TgFEOFIMN4uZ/
+username nocansible_ro view network-operator
+aaa new-model
+!
+!
+aaa authentication login default local group radius
+aaa authorization exec default local group radius
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone EET 2 0
+clock summer-time EEST recurring last Sun Mar 3:00 last Sun Oct 4:00
+system mtu routing 1500
+vtp domain OCEAN
+vtp mode off
+ip arp inspection vlan 1,10-12,70
+ip domain-name pbank.com.ua
+ip name-server 10.1.100.70
+ip name-server 10.1.99.250
+!
+!
+ip dhcp snooping vlan 1,10-12,70
+ip dhcp snooping database flash:/dhcp_snooping.dat
+ip dhcp snooping
+login on-failure log
+login on-success log
+!
+mls qos map cos-dscp 0 8 16 26 32 46 48 56
+mls qos srr-queue input bandwidth 90 10
+mls qos srr-queue input threshold 1 8 16
+mls qos srr-queue input threshold 2 34 66
+mls qos srr-queue input buffers 67 33
+mls qos srr-queue input cos-map queue 1 threshold 2 1
+mls qos srr-queue input cos-map queue 1 threshold 3 0
+mls qos srr-queue input cos-map queue 2 threshold 1 2
+mls qos srr-queue input cos-map queue 2 threshold 2 4 6 7
+mls qos srr-queue input cos-map queue 2 threshold 3 3 5
+mls qos srr-queue input dscp-map queue 1 threshold 2 9 10 11 12 13 14 15
+mls qos srr-queue input dscp-map queue 1 threshold 3 0 1 2 3 4 5 6 7
+mls qos srr-queue input dscp-map queue 1 threshold 3 32
+mls qos srr-queue input dscp-map queue 2 threshold 1 16 17 18 19 20 21 22 23
+mls qos srr-queue input dscp-map queue 2 threshold 2 33 34 35 36 37 38 39 48
+mls qos srr-queue input dscp-map queue 2 threshold 2 49 50 51 52 53 54 55 56
+mls qos srr-queue input dscp-map queue 2 threshold 2 57 58 59 60 61 62 63
+mls qos srr-queue input dscp-map queue 2 threshold 3 24 25 26 27 28 29 30 31
+mls qos srr-queue input dscp-map queue 2 threshold 3 40 41 42 43 44 45 46 47
+mls qos srr-queue output cos-map queue 1 threshold 3 5
+mls qos srr-queue output cos-map queue 2 threshold 3 3 6 7
+mls qos srr-queue output cos-map queue 3 threshold 3 2 4
+mls qos srr-queue output cos-map queue 4 threshold 2 1
+mls qos srr-queue output cos-map queue 4 threshold 3 0
+mls qos srr-queue output dscp-map queue 1 threshold 3 40 41 42 43 44 45 46 47
+mls qos srr-queue output dscp-map queue 2 threshold 3 24 25 26 27 28 29 30 31
+mls qos srr-queue output dscp-map queue 2 threshold 3 48 49 50 51 52 53 54 55
+mls qos srr-queue output dscp-map queue 2 threshold 3 56 57 58 59 60 61 62 63
+mls qos srr-queue output dscp-map queue 3 threshold 3 16 17 18 19 20 21 22 23
+mls qos srr-queue output dscp-map queue 3 threshold 3 32 33 34 35 36 37 38 39
+mls qos srr-queue output dscp-map queue 4 threshold 1 8
+mls qos srr-queue output dscp-map queue 4 threshold 2 9 10 11 12 13 14 15
+mls qos srr-queue output dscp-map queue 4 threshold 3 0 1 2 3 4 5 6 7
+mls qos queue-set output 1 threshold 1 138 138 92 138
+mls qos queue-set output 1 threshold 2 138 138 92 400
+mls qos queue-set output 1 threshold 3 36 77 100 318
+mls qos queue-set output 1 threshold 4 20 50 67 400
+mls qos queue-set output 2 threshold 1 149 149 100 149
+mls qos queue-set output 2 threshold 2 118 118 100 235
+mls qos queue-set output 2 threshold 3 41 68 100 272
+mls qos queue-set output 2 threshold 4 42 72 100 242
+mls qos queue-set output 1 buffers 10 10 26 54
+mls qos queue-set output 2 buffers 16 6 17 61
+mls qos
+!
+crypto pki trustpoint HTTPS_SS_CERT_KEYPAIR
+ enrollment selfsigned
+ serial-number
+ revocation-check none
+ rsakeypair HTTPS_SS_CERT_KEYPAIR
+!
+!
+crypto pki certificate chain HTTPS_SS_CERT_KEYPAIR
+ certificate self-signed 01
+  30820258 308201C1 A0030201 02020101 300D0609 2A864886 F70D0101 04050030
+  3D311130 0F060355 04031408 3230315F 3133352E 3128300F 06035504 05130831
+  43443841 44303030 1506092A 864886F7 0D010902 16083230 315F3133 352E301E
+  170D3136 31313135 31353031 30305A17 0D323030 31303130 30303030 305A303D
+  3111300F 06035504 03140832 30315F31 33352E31 28300F06 03550405 13083143
+  44384144 30303015 06092A86 4886F70D 01090216 08323031 5F313335 2E30819F
+  300D0609 2A864886 F70D0101 01050003 818D0030 81890281 8100D0BB 5758CC18
+  D4DF507D 5D37B113 6E7EB7A2 D3973A66 28E12C0D 49AD4284 8C5AA3A7 716C9907
+  8B5D9C3A 279F9600 3AA881F9 0313D325 1F8C78BF E8C0049F 27576FC5 38AAE92C
+  B94FA73D 914DE9F2 7413DC01 1AC6D501 7C6ABFA0 CCB28BF1 806A83D1 972B2152
+  CD5C9AC7 1DB0BD11 A51B4F7E 61838784 EBDBF992 DECF349C 79290203 010001A3
+  68306630 0F060355 1D130101 FF040530 030101FF 30130603 551D1104 0C300A82
+  08323031 5F313335 2E301F06 03551D23 04183016 80143267 D25B253F 39CBDFAF
+  9784B118 D6A1ED8F D11D301D 0603551D 0E041604 143267D2 5B253F39 CBDFAF97
+  84B118D6 A1ED8FD1 1D300D06 092A8648 86F70D01 01040500 03818100 4A6EB3AE
+  88D4E793 295B6DB1 D3B53EE1 D32F765F 0B7CFBDA 201B3886 8C561053 3C0ED7B4
+  97021E50 83E0DDCB F06E4583 0A248667 4D7F51E7 1E672CE1 53DA498D FFC470F3
+  156F0A15 F79FE396 C7CB70F3 1245E55E 7F62EBBE 965F2173 20B92EA2 2B5B6389
+  FE685849 979F3833 FC7B98CD D1BDAC60 C5470254 378F016B 83F970C1
+        quit
+!
+!
+!
+errdisable recovery cause udld
+errdisable recovery cause bpduguard
+errdisable recovery cause security-violation
+errdisable recovery cause channel-misconfig (STP)
+errdisable recovery cause pagp-flap
+errdisable recovery cause dtp-flap
+errdisable recovery cause link-flap
+errdisable recovery cause sfp-config-mismatch
+errdisable recovery cause gbic-invalid
+errdisable recovery cause l2ptguard
+errdisable recovery cause psecure-violation
+errdisable recovery cause port-mode-failure
+errdisable recovery cause dhcp-rate-limit
+errdisable recovery cause pppoe-ia-rate-limit
+errdisable recovery cause mac-limit
+errdisable recovery cause vmps
+errdisable recovery cause storm-control
+errdisable recovery cause inline-power
+errdisable recovery cause arp-inspection
+errdisable recovery cause loopback
+errdisable recovery cause small-frame
+errdisable recovery interval 30
+archive
+ log config
+  logging enable
+  notify syslog contenttype plaintext
+  hidekeys
+ path scp://cisback:3Rjyabub_79@10.1.212.244/OCEAN/$h-$t
+ write-memory
+!
+spanning-tree mode pvst
+spanning-tree loopguard default
+spanning-tree portfast bpduguard default
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 10-12,38-39,70,171,808,997
+!
+vlan 998
+ name NEW-AP
+!
+vlan 999
+ name PRINTER
+!
+ip ssh time-out 60
+ip ssh authentication-retries 2
+ip ssh version 2
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/2
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/3
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/4
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/5
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/6
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/7
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/8
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/9
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/10
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/11
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/12
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/13
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/14
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/15
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 2 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/16
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/17
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/18
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/19
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ shutdown
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/20
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/21
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/22
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/23
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/24
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/25
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/26
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/27
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/28
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/29
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 2 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/30
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/31
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ power inline never
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/32
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/33
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/34
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/35
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/36
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/37
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/38
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/39
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/40
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/41
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/42
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/43
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/44
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/45
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/46
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/47
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+interface FastEthernet0/48
+ switchport mode access
+ switchport voice vlan 70
+ switchport port-security maximum 2
+ switchport port-security maximum 1 vlan
+ switchport port-security maximum 1 vlan voice
+ switchport port-security
+ switchport port-security aging time 5
+ switchport port-security aging type inactivity
+ switchport port-security aging static
+ ip arp inspection limit rate 300
+ load-interval 30
+ storm-control broadcast level bps 200k
+ storm-control multicast level bps 200k
+ spanning-tree portfast
+!
+#interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+ description UPLINK
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 1,39,70
+ switchport mode trunk
+ ip arp inspection trust
+ load-interval 30
+ ip dhcp snooping trust
+!
+#interface GigabitEthernet0/3
+!
+#interface GigabitEthernet0/4
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan39
+ ip address 100.43.255.47 255.255.255.0
+!
+ip default-gateway 
+no ip http server
+no ip http secure-server
+!
+!
+ip radius source-interface Vlan39
+logging esm config
+logging facility syslog
+logging 10.1.212.244
+logging host 10.10.11.2 transport udp port 5140
+logging host 10.62.98.7 transport udp port 5141
+logging 10.62.98.9
+access-list 99 remark SCP
+access-list 99 permit 10.1.212.244
+access-list 99 remark NEW ZABBIX
+access-list 99 permit 10.62.145.239
+access-list 99 remark AWX
+access-list 99 permit 10.62.99.12
+access-list 99 remark NETBRAIN
+access-list 99 permit 10.61.144.10
+access-list 99 remark ZABBIX
+access-list 99 permit 10.62.129.81
+access-list 99 remark NOC NETWORK
+access-list 99 permit 10.1.77.0 0.0.0.255
+access-list 99 remark OCEAN NETWORK
+access-list 99 permit 10.43.255.0 0.0.0.255
+access-list 99 remark ANYCONNECT NOC
+access-list 99 permit 10.255.238.128 0.0.0.127
+access-list 99 remark WAN ACCESS
+access-list 99 permit 10.255.10.48 0.0.0.15
+access-list 99 remark NOC AWS
+access-list 99 permit 10.59.64.0 0.0.0.255
+access-list 99 permit 10.59.65.0 0.0.0.255
+access-list 99 permit 10.59.66.0 0.0.0.255
+access-list 99 permit 10.59.67.0 0.0.0.255
+access-list 99 permit 10.59.69.0 0.0.0.255
+access-list 99 remark LOGGING
+access-list 99 deny   any log
+snmp-server community pbank RO 99
+snmp-server location 413A
+snmp-server contact 35-80
+radius-server host 10.1.109.84 auth-port 1812 acct-port 1813 key 7 011F070A481C0F1B2244
+radius-server host 10.1.96.105 auth-port 1812 acct-port 1813 key 7 020A0555181106354F46
+!
+!
+!
+!
+line con 0
+ logging synchronous
+ speed 115200
+line vty 0 4
+ access-class 99 in
+ exec-timeout 30 0
+ length 0
+ transport input ssh
+line vty 5 15
+ access-class 99 in
+ exec-timeout 30 0
+ transport input ssh
+!
+ntp server 10.1.246.90
+ntp server 10.1.246.91
+end

@@ -1,0 +1,28 @@
+- default-gateway: 10.43.255.1
+  hostname: 201_135_new_46
+  ip_arp_inspection_vlan: 1,10-12,70
+  ip_dhcp_snooping_vlan: 1,10-12,70
+  ip_vlan_intf: 10.43.255.46 255.255.255.0
+  source_interface: Vlan39
+  sub_name1: NEW-AP
+  sub_name2: PRINTER
+  sub_vlan1: '998'
+  sub_vlan2: '999'
+  uplink_gig: GigabitEthernet0/2
+  uplink_vlan: 1,39,70
+  vlan: 10-12,38-39,70,171,808,997
+  voice_vlan: '70'
+- default-gateway: 10.43.255.1
+  hostname: 201_135_new_47
+  ip_arp_inspection_vlan: 1,10-12,70
+  ip_dhcp_snooping_vlan: 1,10-12,70
+  ip_vlan_intf: 10.43.255.47 255.255.255.0
+  source_interface: Vlan39
+  sub_name1: NEW-AP
+  sub_name2: PRINTER
+  sub_vlan1: '998'
+  sub_vlan2: '999'
+  uplink_gig: GigabitEthernet0/2
+  uplink_vlan: 1,39,70
+  vlan: 10-12,38-39,70,171,808,997
+  voice_vlan: '70'
