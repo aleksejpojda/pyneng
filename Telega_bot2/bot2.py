@@ -2,11 +2,7 @@ from aiogram.utils import executor
 from create_bot import dp
 from handlers import client, admin, other, anonse
 from database import sqlite_db
-from files import remove_old_files
-
-
-
-
+from Utils.files import remove_old_files
 
 """
 Основной файл для запуска

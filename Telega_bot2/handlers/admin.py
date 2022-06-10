@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 from aiogram import types, Dispatcher
-from create_bot import dp, bot#, chatid
+from create_bot import dp, bot
 from database import sqlite_db
 from create_bot import path
 from keyboards.client_keyboard import kb_clients_settings, kb_short_long_link

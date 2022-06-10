@@ -1,7 +1,6 @@
 from aiogram import types, Dispatcher
-from aiogram.types import ReplyKeyboardRemove
 from create_bot import dp, bot
-from keyboards import kb_clients_settings, kb_clients
+from keyboards.client_keyboard import kb_clients_settings, kb_clients
 #from Columbia_com import parse
 #import time
 
@@ -9,9 +8,6 @@ from keyboards import kb_clients_settings, kb_clients
 #@dp.message_handler(commands=["start", "help", "Меню"])
 async def commads_start(message: types.CallbackQuery):
     try:
-        #await message.answer(message.text)  # тупо отсылает текст
-        # await message.reply(message.text) # отвечает, цитируя твое сообщение
-        # await bot.send_message(message.from_user.id, message.text) #отправить лично пользователю
         await bot.send_message(message.from_user.id, "Меню", reply_markup=kb_clients)
         #await message.message.delete()
     except:

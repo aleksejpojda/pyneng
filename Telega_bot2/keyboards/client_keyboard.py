@@ -1,5 +1,5 @@
 import yaml
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 b1 = InlineKeyboardButton(text='Настройки', callback_data='Настройки')

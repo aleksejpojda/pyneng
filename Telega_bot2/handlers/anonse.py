@@ -8,8 +8,8 @@ from Zara_com import parser_Zara
 from SixPM_com import parser_6pm
 from Amazon_com import parser_Amazon
 import time, yaml, csv, os
-from files import remove_old_files, list_dir_sites
-from short_link import short_url
+from Utils.files import remove_old_files, list_dir_sites
+from Utils.short_link import short_url
 
 
 def list_files(key=None, value=None):
@@ -17,7 +17,6 @@ def list_files(key=None, value=None):
     with open('file_list.yaml') as f:
         list_file = yaml.safe_load(f)
         list_file_keys = [key.lstrip('/') for key in list_file.keys()]
-    #print(list_file_keys, '*********')
         for line in list_file.values():
             list_file_value.extend(line)
             list_file_value = [file.lstrip('/') for file in list_file_value]
@@ -25,8 +24,6 @@ def list_files(key=None, value=None):
         return list_file_keys
     elif value == 'value':
         return list_file_value
-#list_file_value.extend = [lists for lists in list_file.values()]
-#print(list_file_value, '888888')
 
 #@dp.message_handler(commands=list_file_value)
 async def command_anonse_file(message: types.CallbackQuery):

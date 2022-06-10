@@ -33,7 +33,3 @@ def remove_old_files(remove=False):
         yaml.dump(result, f, default_flow_style=False)
 
     return result
-
-
-#print(list_dir_sites())
-#remove_old_files()
