@@ -38,6 +38,8 @@
       6. voice_vlan для настройки портов FastEthernet<br>
       7. access_list номер аксесс-листа, который будет настраиваться<br>
       8. access_list_rule параметры аксесс-листа, permit и/или remark<br>
+      9. ip_vlan_intf ip и маска на интерфейсе source_interface<br>
+     10. source_interface интерфейс, который исользуется вместо Vlan1<br>
 
 
 В каталоге venv находится виртуальное окружение Python с установленными пакетами, не удалять.
