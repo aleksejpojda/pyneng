@@ -158,12 +158,11 @@ vlan internal allocation policy ascending
 !
 vlan {{vlan}}
 !
-vlan {{sub_vlan1}}
- name {{sub_name1}}
+{% for line in sub_interface_vlan_name %}
+vlan {{line.vlan}}
+ name {{line.name}}
 !
-vlan {{sub_vlan2}}
- name {{sub_name2}}
-!
+{% endfor %}
 ip ssh time-out 60
 ip ssh authentication-retries 2
 ip ssh version 2
