@@ -1,8 +1,3 @@
-Current configuration : 33475 bytes
-!
-! Last configuration change at 10:59:32 EEST Fri May 6 2022 by dn090285gvv1
-! NVRAM config last updated at 11:01:33 EEST Fri May 6 2022 by dn090285gvv1
-!
 version 15.0
 no service pad
 service timestamps debug datetime msec localtime show-timezone year
@@ -405,7 +400,7 @@ interface FastEthernet0/15
  switchport mode access
  switchport voice vlan 70
  switchport port-security maximum 2
- switchport port-security maximum 1 vlan
+ switchport port-security maximum 2 vlan
  switchport port-security maximum 1 vlan voice
  switchport port-security
  switchport port-security aging time 5
@@ -477,6 +472,7 @@ interface FastEthernet0/19
  switchport port-security aging static
  ip arp inspection limit rate 300
  load-interval 30
+ shutdown
  storm-control broadcast level bps 200k
  storm-control multicast level bps 200k
  spanning-tree portfast
@@ -629,7 +625,7 @@ interface FastEthernet0/29
  switchport mode access
  switchport voice vlan 70
  switchport port-security maximum 2
- switchport port-security maximum 1 vlan
+ switchport port-security maximum 2 vlan
  switchport port-security maximum 1 vlan voice
  switchport port-security
  switchport port-security aging time 5
@@ -669,6 +665,7 @@ interface FastEthernet0/31
  switchport port-security aging static
  ip arp inspection limit rate 300
  load-interval 30
+ power inline never
  storm-control broadcast level bps 200k
  storm-control multicast level bps 200k
  spanning-tree portfast
@@ -945,11 +942,7 @@ interface FastEthernet0/48
  storm-control multicast level bps 200k
  spanning-tree portfast
 !
-interface GigabitEthernet0/1
-!
-interface GigabitEthernet0/3
-!
-interface GigabitEthernet0/4
+#interface GigabitEthernet0/1
 !
 interface GigabitEthernet0/2
  description UPLINK
@@ -959,6 +952,10 @@ interface GigabitEthernet0/2
  ip arp inspection trust
  load-interval 30
  ip dhcp snooping trust
+!
+#interface GigabitEthernet0/3
+!
+#interface GigabitEthernet0/4
 !
 interface Vlan1
  no ip address
