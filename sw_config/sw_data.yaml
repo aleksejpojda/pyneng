@@ -4,25 +4,95 @@
   ip_dhcp_snooping_vlan: 1,10-12,70
   ip_vlan_intf: 10.43.255.46 255.255.255.0
   source_interface: Vlan39
-  sub_name1: NEW-AP
-  sub_name2: PRINTER
-  sub_vlan1: '998'
-  sub_vlan2: '999'
+  last_interface: 48
+  sub_interface_vlan_name:
+    - vlan: 998
+      name: NEW-AP
+    - vlan: 999
+      name: PRINTER
   uplink_gig: GigabitEthernet0/2
+  no_uplink:
+    - GigabitEthernet0/1
+    - GigabitEthernet0/3
+    - GigabitEthernet0/4
   uplink_vlan: 1,39,70
   vlan: 10-12,38-39,70,171,808,997
   voice_vlan: '70'
+  vtp_domain: OCEAN
+  archive_path: scp://cisback:3Rjyabub_79@10.1.212.244/OCEAN/$h-$t
+  access_list: '99'
+  access_list_rule:
+    - remark: SCP
+      permit: 10.1.212.244
+    - remark: NEW ZABBIX
+      permit: 10.62.145.239
+    - remark: AWX
+      permit: 10.62.99.12
+    - remark: NETBRAIN
+      permit: 10.61.144.10
+    - remark: ZABBIX
+      permit: 10.62.129.81
+    - remark: NOC NETWORK
+      permit: 10.1.77.0 0.0.0.255
+    - remark: OCEAN NETWORK
+      permit: 10.43.255.0 0.0.0.255
+    - remark: ANYCONNECT NOC
+      permit: 10.255.238.128 0.0.0.127
+    - remark: WAN ACCESS
+      permit: 10.255.10.48 0.0.0.15
+    - remark: NOC AWS
+      permit: 10.59.64.0 0.0.0.255
+    - permit: 10.59.65.0 0.0.0.255
+    - permit: 10.59.66.0 0.0.0.255
+    - permit: 10.59.67.0 0.0.0.255
+    - permit: 10.59.69.0 0.0.0.255
+    - remark: LOGGING
 - default-gateway: 10.43.255.1
   hostname: 201_135_new_47
   ip_arp_inspection_vlan: 1,10-12,70
   ip_dhcp_snooping_vlan: 1,10-12,70
   ip_vlan_intf: 10.43.255.47 255.255.255.0
   source_interface: Vlan39
-  sub_name1: NEW-AP
-  sub_name2: PRINTER
-  sub_vlan1: '998'
-  sub_vlan2: '999'
+  last_interface: 48
+  sub_interface_vlan_name:
+    - vlan: 998
+      name: NEW-AP
+    - vlan: 999
+      name: PRINTER
+  no_uplink:
+    - GigabitEthernet0/1
+    - GigabitEthernet0/3
+    - GigabitEthernet0/4
   uplink_gig: GigabitEthernet0/2
   uplink_vlan: 1,39,70
   vlan: 10-12,38-39,70,171,808,997
   voice_vlan: '70'
+  vtp_domain: OCEAN
+  archive_path: scp://cisback:3Rjyabub_79@10.1.212.244/OCEAN/$h-$t
+  access_list: '99'
+  access_list_rule:
+    - remark: SCP
+      permit: 10.1.212.244
+    - remark: NEW ZABBIX
+      permit: 10.62.145.239
+    - remark: AWX
+      permit: 10.62.99.12
+    - remark: NETBRAIN
+      permit: 10.61.144.10
+    - remark: ZABBIX
+      permit: 10.62.129.81
+    - remark: NOC NETWORK
+      permit: 10.1.77.0 0.0.0.255
+    - remark: OCEAN NETWORK
+      permit: 10.43.255.0 0.0.0.255
+    - remark: ANYCONNECT NOC
+      permit: 10.255.238.128 0.0.0.127
+    - remark: WAN ACCESS
+      permit: 10.255.10.48 0.0.0.15
+    - remark: NOC AWS
+      permit: 10.59.64.0 0.0.0.255
+    - permit: 10.59.65.0 0.0.0.255
+    - permit: 10.59.66.0 0.0.0.255
+    - permit: 10.59.67.0 0.0.0.255
+    - permit: 10.59.69.0 0.0.0.255
+    - remark: LOGGING

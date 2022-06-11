@@ -35,7 +35,7 @@ def generate_config(params):
         config = params[1]
         file = params[2]
     else: return
-    env = Environment(loader=FileSystemLoader("."))
+    env = Environment(loader=FileSystemLoader("."), lstrip_blocks=True, trim_blocks=True)
     templ = env.get_template(template)
     with open(config, "r") as f:
         conf = yaml.safe_load(f)
