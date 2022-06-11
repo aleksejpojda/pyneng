@@ -2,7 +2,6 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 from sys import argv
 
-#print(len(argv))
 
 def param_from_cmd():
     """Функция обрабатывает параметры на входе комндной строки"""

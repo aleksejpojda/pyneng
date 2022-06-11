@@ -227,13 +227,14 @@ logging host 10.10.11.2 transport udp port 5140
 logging host 10.62.98.7 transport udp port 5141
 logging 10.62.98.9
 {% for line in access_list_rule %}
-{% if line.remark and line.permit%}
+{% if line.remark%}
 access-list {{access_list}} remark {{line.remark}}
+{% endif %}
+{% if line.permit %}
 access-list {{access_list}} permit {{line.permit}}
-{% elif not line.remark and line.permit %}
-access-list {{access_list}} permit {{line.permit}}
-{% else %}
-access-list {{access_list}} remark {{line.remark}}
+{% endif %}
+{% if line.deny %}
+access-list {{access_list}} deny {{line.deny}}
 {% endif %}
 {% endfor %}
 access-list {{access_list}} deny   any log
