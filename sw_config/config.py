@@ -5,53 +5,45 @@ from sys import argv
 #print(len(argv))
 
 def param_from_cmd():
+    template = 'sw_config.txt'
+    config = 'sw_data.yaml'
+    file = False
+    help_text = ("-t выбрать шаблон для настройки, по-умолчанию sw_config.txt\n"
+              "-c выбрать файл с конфигурацией свитча, по-умолчанию sw_data.yaml\n"
+              "-h вывод этой справки\n"
+              "-ip имя файла берем из hostname\n")
     if len(argv) == 1:
-        template = 'sw_config.txt'
-        config = 'sw_data.yaml'
-        print("-t выбрать шаблон для настройки, по-умолчанию sw_config.txt\n"
-              "-c выбрать файл с конфигурацией свитча, по-умолчанию sw_data.yaml\n"
-              "-h вывод этой справки")
-#        print('Нет параметров')
-    elif len(argv) == 2:
-        print("-t выбрать шаблон для настройки, по-умолчанию sw_config.txt\n"
-              "-c выбрать файл с конфигурацией свитча, по-умолчанию sw_data.yaml\n"
-              "-h вывод этой справки")
-        return
-    elif len(argv) == 3:
-#        print('Только первый параметр')
-        if '-t' in argv[1]:
-            template = argv[2]
-            config = 'sw_data.yaml'
-        elif '-c' in argv[1]:
-            config = argv[2]
-            template = 'sw_config.txt'
+        print(help_text, "Используются значения по-умолчанию")
+    elif len(argv) >= 2:
+        if '-t' in argv:
+            template = argv[argv.index('-t') + 1]
+        elif '-c' in argv:
+            config = argv[argv.index('-c') + 1]
+        elif '-ip' in argv:
+            file = True
+        elif '-h' in argv:
+            print(help_text)
         else:
             print("Что-то не так с параметрами")
-            print("-t выбрать шаблон для настройки, по-умолчанию sw_config.txt\n"
-                  "-c выбрать файл с конфигурацией свитча, по-умолчанию sw_data.yaml\n"
-                  "-h вывод этой справки")
+            print(help_text)
             return
-    elif len(argv) > 3:
-        if '-t' in argv and '-c' in argv:
-            template = argv[argv.index('-t')+1]
-            config = argv[argv.index('-c')+1]
-        else:
-            print("Что-то не так с параметрами")
-            return
-    return template, config
+    return template, config, file
 
 def generate_config(params):
     if params:
         template = params[0]
         config = params[1]
+        file = params[2]
     else: return
     env = Environment(loader=FileSystemLoader("."))
     templ = env.get_template(template)
     with open(config, "r") as f:
         conf = yaml.safe_load(f)
     for device in conf:
-        #sw = device['ip_vlan_intf'].split()[0] + '.txt'    # Берем имя из значение параметра ip_vlan_intf до пробела
-        sw = device['hostname'] + '.txt'    # Берем имя из hostname
+        if file == True:
+            sw = device['ip_vlan_intf'].split()[0] + '.txt' # Берем имя из значение параметра ip_vlan_intf до пробела
+        elif file == False:
+            sw = device['hostname'] + '.txt'    # Берем имя из hostname
         with open(sw, 'w') as f:
             f.write(templ.render(device))
             print(f'Файл {sw} записан')
