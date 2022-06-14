@@ -47,7 +47,7 @@
     - permit: 10.59.67.0 0.0.0.255
     - permit: 10.59.69.0 0.0.0.255
     - remark: LOGGING
-    - deny: ''
+    - deny:
 - default-gateway: 10.43.255.1
   hostname: 201_135_new_47
   ip_arp_inspection_vlan: 1,10-12,70
